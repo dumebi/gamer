@@ -11,14 +11,23 @@ if (isset($_POST["regButton"])) {
     if ($existCount >= 1) { // evaluate the count
 	   echo "<script>alert('Sorry! username is taken')</script>"; 
     } else {
+		$password = md5($userpass);
 		$usermail =  $_POST["usermail"];
 		$password = md5($userpass);
+		
+				
+		$product_image1 = $_FILES['profile']['name'];
+		$product_image_temp1 = $_FILES['profile']['tmp_name'];
+		move_uploaded_file($product_image_temp1,"dist/img/profile/$product_image1");
+		
     // Connect to the MySQL database  
-    $insert_user = "insert into user (username, password, email, image, reg_date) values('$username', , now())"; 
+    $insert_user = "insert into user (username, password, email, image, reg_date) values('$username', '$password', '$usermail', '$product_image1', now())"; 
 	// insert into the database
    $insert_pro = mysqli_query($conn, $insert_user);
 	
 	if($insert_pro){
+
+		
 		
 	echo "<script>alert('Thank you for Registering. Proceed to Login')</script>";
 	echo "<script>window.open('login.php','_self')</script>";
@@ -39,7 +48,7 @@ if (isset($_POST["regButton"])) {
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>InformaShop | Registration Page</title>
+    <title>Gamer | Registration Page</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -67,13 +76,13 @@ if (isset($_POST["regButton"])) {
       </div>
       <div class="register-box-body">
         <p class="login-box-msg">Fill the form to register</p>
-        <form action="register.php" method="post">
+        <form action="register.php" enctype="multipart/form-data" method="post">
           <div class="form-group has-feedback">
             <input type="text" name="username" class="form-control" placeholder="Username">
             <span class="fa fa-user form-control-feedback"></span>
           </div>
 		  <div class="form-group has-feedback">
-			<input type="file" name="usermail" class="form-control">
+			<input type="file" name="profile" class="form-control">
             <span class="fa fa-camera form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">

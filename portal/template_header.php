@@ -5,8 +5,17 @@ $email = '';
 $picture = '';
 if (isset($_SESSION["list_manager"])){
 $user = $_SESSION['list_manager'];
-$email = $_SESSION['email'];
-$picture = $_SESSION['picture'];
+$email = '';
+$picture = '';
+$sql = mysqli_query($conn, "SELECT * FROM user WHERE username='$user' LIMIT 1"); 
+    $existCount = mysqli_affected_rows($conn); 
+    if ($existCount == 1) { 
+		 while($row = mysqli_fetch_array($sql)){ 
+             $email = $row["email"];
+			 $image = $row["image"];
+			$picture = "dist/img/profile/".$image."";
+		 }
+    }
 }
 elseif(isset($_SESSION['google_name'])){
 	$user = $_SESSION['google_name'];
@@ -72,9 +81,18 @@ else{
                     <div class="pull-right">
                       <a href="signout.php" class="btn btn-default btn-flat">Sign out</a>
                     </div>
-					<div class="pull-left">
-                      <a href="../profile.php" class="btn btn-default btn-flat">Edit Profile</a>
+					<?php 
+					if (isset($_SESSION["list_manager"])){
+						echo '
+						<div class="pull-left">
+                      <a href="profile.php" class="btn btn-default btn-flat">Edit Profile</a>
                     </div>
+						';
+					}
+					else{}
+					
+					?>
+					
                   </li>
                 </ul>
               </li>

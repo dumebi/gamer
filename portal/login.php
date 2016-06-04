@@ -115,20 +115,12 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 	$manager = preg_replace('#[^A-Za-z0-9]#i', '', $_POST["username"]); // filter everything but numbers and letters
     $password = preg_replace('#[^A-Za-z0-9]#i', '', $_POST["password"]); // filter everything but numbers and letters
 	$pass = md5($password);
-	echo $pass;
     // Connect to the MySQL database  
-    $sql = mysqli_query($conn, "SELECT * FROM user WHERE username='$manager' AND shop_password='$pass' LIMIT 1"); // query the person
+    $sql = mysqli_query($conn, "SELECT * FROM user WHERE username='$manager' AND password='$pass' LIMIT 1"); // query the person
     // ------- MAKE SURE PERSON EXISTS IN DATABASE ---------
     $existCount = mysqli_affected_rows($conn); // count the row nums
     if ($existCount == 1) { // evaluate the count
-	     while($row = mysqli_fetch_array($sql)){ 
-             $shop = $row["shop_name"];
-			 $shop_site = $row["shop_website"];
-		 }
-		
 		 $_SESSION["list_manager"] = $manager;
-		 $_SESSION["shop"] = $shop;
-		 $_SESSION["shop_site"] = $shop_site;
 		echo" <script>window.location='index.php';</script>"; 
          exit();
     } else {
@@ -178,7 +170,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
           </div>
           <div class="form-group has-feedback">
             <input type="password" name="password" class="form-control" placeholder="Password">
-            <span class="fa fa-key form-control-feedback"></span>
+            <span class="fa fa-lock form-control-feedback"></span>
           </div>
           <div class="row">
             <div class="col-xs-8">
