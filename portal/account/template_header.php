@@ -1,6 +1,5 @@
-
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
 <?php
+include('../../storescripts/connect_to_mysql.php');
 session_start();
 $user = '';
 $email = '';
@@ -136,12 +135,17 @@ else{
               </a>
               <ul class="treeview-menu">
                 <li><a href="pages/deals/all_deals.php"><i class="fa fa-circle-o"></i> New Game</a></li>
-				<li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span> <small class="label pull-right bg-red">Pending</small></a></li>
+				<li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
               </ul>
             </li>
 			<li>
               <a href="account/stats.php">
-                <i class="material-icons">gamepad </i>New Game <span></span> 
+                <i class="material-icons">gamepad</i> <span>New Game</span> 
+              </a>
+            </li>
+			<li>
+              <a href="account/stats.php">
+                <i class="fa fa-bar-chart"></i> <span>View My Stats</span> 
               </a>
             </li>
 			<li>

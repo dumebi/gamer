@@ -1,40 +1,6 @@
-
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
 <?php
-session_start();
-$user = '';
-$email = '';
-$picture = '';
-if (isset($_SESSION["list_manager"])){
-$user = $_SESSION['list_manager'];
-$email = '';
-$picture = '';
-$sql = mysqli_query($conn, "SELECT * FROM user WHERE username='$user' LIMIT 1"); 
-    $existCount = mysqli_affected_rows($conn); 
-    if ($existCount == 1) { 
-		 while($row = mysqli_fetch_array($sql)){ 
-             $email = $row["email"];
-			 $image = $row["image"];
-			$picture = "dist/img/profile/".$image."";
-		 }
-    }
-}
-elseif(isset($_SESSION['google_name'])){
-	$user = $_SESSION['google_name'];
-	$email = $_SESSION['google_email'];
-	$picture = $_SESSION['google_pic']; 
-
-}
-elseif(isset($_SESSION['FBID'])){      
-       $user = $_SESSION['FULLNAME'];
-	   $email = $_SESSION['EMAIL'];
-	   $picture = "https://graph.facebook.com/".$_SESSION['FBID']."/picture";
-}
-else{
-	echo "<script>window.open('login.php','_self')</script>";
-}
-
-?>     
+$user = $_SESSION['admin_manager'];
+ ?>     
 	 <header class="main-header">
 
         <!-- Logo -->
@@ -62,13 +28,13 @@ else{
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <img src="<?php echo $picture ?>" class="user-image" alt="User Image">
-                  <span class="hidden-xs"><?php echo $email ?></span>
+                  <img src="images/avatar.png" class="user-image" alt="User Image">
+                  <span class="hidden-xs"><?php echo $user ?></span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
                   <li class="user-header">
-                    <img src="<?php echo $picture ?>" class="img-circle" alt="User Image">
+                    <img src="images/avatar.png" class="img-circle" alt="User Image">
                     <p>
                       <?php echo $user ?> - Gamer
                       
@@ -77,24 +43,12 @@ else{
                   
                   <!-- Menu Footer-->
                   <li class="user-footer">
-                   <!-- <div class="pull-left">
-                      <a href="#" class="btn btn-default btn-flat">Profile</a>
-                    </div>-->
+                   <div class="pull-left">
+                      <a href="account.php" class="btn btn-default btn-flat">Profile</a>
+                    </div>
                     <div class="pull-right">
                       <a href="signout.php" class="btn btn-default btn-flat">Sign out</a>
                     </div>
-					<?php 
-					if (isset($_SESSION["list_manager"])){
-						echo '
-						<div class="pull-left">
-                      <a href="profile.php" class="btn btn-default btn-flat">Edit Profile</a>
-                    </div>
-						';
-					}
-					else{}
-					
-					?>
-					
                   </li>
                 </ul>
               </li>
@@ -111,11 +65,10 @@ else{
           <!-- Sidebar user panel -->
           <div class="user-panel">
             <div class="pull-left image">
-              <img src="<?php echo $picture ?>" class="img-circle" alt="User Image">
+              <img src="images/avatar.png" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
               <p><?php echo $user ?></p>
-			  </br></br>
               <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
           </div>
@@ -128,32 +81,34 @@ else{
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span> 
               </a>
             </li>
-			<li class="treeview">
-              <a href="#">
-                <i class="fa fa-gamepad"></i>
-                <span>My Games</span>
-                <span class="label label-primary pull-right"></span>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="pages/deals/all_deals.php"><i class="fa fa-circle-o"></i> New Game</a></li>
-				<li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span> <small class="label pull-right bg-red">Pending</small></a></li>
-              </ul>
-            </li>
-			<li>
-              <a href="account/stats.php">
-                <i class="material-icons">gamepad </i>New Game <span></span> 
+            
+            <li>
+              <a href="all_products.php">
+			    <?php
+			 include_once('../storescripts/connect_to_mysql.php');
+				$shop_products = mysqli_query($conn,"select * from Games") or die(mysqli_error($conn));
+				$productCount = mysqli_affected_rows($conn);
+				 // count the output amount
+			  ?>
+                <i class="fa fa-th"></i> <span> View all Games</span> <small class="label pull-right bg-green"><?php echo $productCount ?></small>
               </a>
             </li>
-			<li>
-              <a href="account/refill.php">
-                <i class="fa fa-refresh"></i> <span>Refill Account</span> 
+			 <li>
+              <a href="all_cards.php">
+			    <?php
+				$card_products = mysqli_query($conn,"select * from account") or die(mysqli_error($conn));
+				$cardCount = mysqli_affected_rows($conn);
+				 // count the output amount
+			  ?>
+                <i class="fa fa-th"></i> <span> View all Users</span> <small class="label pull-right bg-green"><?php echo $cardCount ?></small>
               </a>
             </li>
-			<li>
-              <a href="signout.php">
-                <i class="fa fa-sign-out"></i> <span>Log Out</span> 
+			 <li>
+              <a href="new_user.php">
+                <i class="fa fa-user"></i> <span> Add new Admin user</span>
               </a>
             </li>
+            
             </ul>
         </section>
         <!-- /.sidebar -->

@@ -1,5 +1,3 @@
-
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
 <?php
 session_start();
 $user = '';
@@ -15,7 +13,7 @@ $sql = mysqli_query($conn, "SELECT * FROM user WHERE username='$user' LIMIT 1");
 		 while($row = mysqli_fetch_array($sql)){ 
              $email = $row["email"];
 			 $image = $row["image"];
-			$picture = "dist/img/profile/".$image."";
+			$picture = "../dist/img/profile/".$image."";
 		 }
     }
 }
@@ -38,7 +36,7 @@ else{
 	 <header class="main-header">
 
         <!-- Logo -->
-        <a href="index.php" class="logo">
+        <a href="../index.php" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>G</b></span>
           <!-- logo for regular state and mobile devices -->
@@ -124,7 +122,7 @@ else{
           <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
             <li class="active treeview">
-              <a href="index.php">
+              <a href="../index.php">
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span> 
               </a>
             </li>
@@ -136,7 +134,7 @@ else{
               </a>
               <ul class="treeview-menu">
                 <li><a href="pages/deals/all_deals.php"><i class="fa fa-circle-o"></i> New Game</a></li>
-				<li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span> <small class="label pull-right bg-red">Pending</small></a></li>
+				<li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
               </ul>
             </li>
 			<li>
