@@ -1,89 +1,163 @@
 <?php
 //connecting to database
 include('../storescripts/connect_to_mysql.php');
+//include('../storescripts/crypto.php');
 session_start();
 if (!isset($_SESSION["admin_manager"])) {
    echo" <script>window.location='login.php';</script>"; 
     exit();
 }
 ?>
- <?php 
 
-?>
-
-<?php 
+<?php
 // Delete Item Question to Admin, and Delete Product if they choose
 if (isset($_GET['deleteid'])) {
-	echo 'Do you really want to delete product with ID of ' . $_GET['deleteid'] . '? <a href="all_products.php?yesdelete=' . $_GET['deleteid'] . '">Yes</a> | <a href="all_products.php">No</a>';
+	echo 'Do you really want to delete game with ID of ' . $_GET['deleteid'] . '? <a href="all_games.php?yesdelete=' . $_GET['deleteid'] . '">Yes</a> | <a href="all_games.php">No</a>';
 	exit();
 }
 if (isset($_GET['yesdelete'])) {
-	// remove item from system and delete its picture
-	// delete from database
-	$id_to_delete = $_GET['yesdelete'];
-	$sql = mysqli_query($conn,"DELETE FROM products WHERE id='$id_to_delete' LIMIT 1") or die (mysqli_error($conn));
-	// unlink the image from server
-	// Remove The Pic -------------------------------------------
-   // $pictodelete = ("../../assets/images/product_images/$product_image1");
-   /* if (file_exists($pictodelete)) {
-       		    unlink($pictodelete);
-    }*/
-	header("location: all_products.php"); 
-    exit();
-}
-?>
-<?php 
-if(isset($_POST['insertButton'])){
-	$pname = $_POST['pname'];
-	$product_desc = $_POST['product_desc'];
-	
-	$insertCard = mysqli_query($conn, 'Insert into products (name, image, body, date_added) values ("$pname", "$product_image1", "$product_desc", now())');
-	if($insertCard){
-		$product_image1 = $_FILES['product_image1']['name'];
-		$product_image_temp1 = $_FILES['product_image1']['tmp_name'];
-		move_uploaded_file($product_image_temp1,"../images/products/$product_image1");
-		echo" <script>alert('Product has been added');</script>"; 
-		echo" <script>window.location='all_products.php';</script>"; 
-	}else{
-		echo" <script>alert('Error! Product not added');</script>"; 
+		// remove item from system and delete its picture
+		// delete from database
+		$id_to_delete = $_GET['yesdelete'];
+		$sql = mysqli_query($conn,"DELETE FROM games WHERE id='$id_to_delete' LIMIT 1") or die (mysqli_error($conn));
+		// unlink the image from server
+		// Remove The Pic -------------------------------------------
+		$shop_games = mysqli_query($conn,"select image from games where id = '$id_to_delete' ") or die(mysqli_error($conn));
+		$gameCount = mysqli_affected_rows($conn);
+		if ($gameCount > 0) {
+		while($row = mysqli_fetch_array($shop_games)){ 
+				$image = $row[0];
+				$pictodelete = ("../game_icons/".$image."");
+				if (file_exists($pictodelete)) {
+							unlink($pictodelete);
+				}
+		}
+		header("location: all_games.php"); 
+		exit();
 	}
 }
 ?>
+
+<?php 
+if(isset($_POST['insertButton'])){
+	$name = $_POST['name'];
+	$type = $_POST['type'];
+	$image = $_FILES['image']['name'];
+	$cost = $_POST['cost'];
+	$description = $_POST['description'];
+	
+	$filename = $_FILES["gameFile"]["name"];
+	$location = explode(".", $filename);
+	
+	
+	$insertGame = mysqli_query($conn, 'Insert into games (name, type, image, location, cost, description, date_created) values ("'.$name.'", "'.$type.'", "'.$image.'", "'.$location[0].'", "'.$cost.'", "'.$description.'", now())')or die(mysqli_error($conn));
+	if($insertGame){
+		//$image = $_FILES['image']['name'];
+		$image_temp1 = $_FILES['image']['tmp_name'];
+		move_uploaded_file($image_temp1,"../game_icons/$image");
+		
+		
+		// ----------------------- ZIP -----------------------------------
+				if($_FILES["gameFile"]["name"]) {
+				$filename = $_FILES["gameFile"]["name"];
+				$source = $_FILES["gameFile"]["tmp_name"];
+				$type = $_FILES["gameFile"]["type"];
+				
+				$name = explode(".", $filename);
+				$accepted_types = array('application/zip', 'application/x-zip-compressed', 'multipart/x-zip', 'application/x-compressed');
+				foreach($accepted_types as $mime_type) {
+					if($mime_type == $type) {
+						$okay = true;
+						break;
+					} 
+				}
+				
+				$continue = strtolower($name[1]) == 'zip' ? true : false;
+				if(!$continue) {
+					$message = "The file you are trying to upload is not a .zip file. Please try again.";
+				}
+
+				$target_path = "../games/".$name[0];  // change this to the correct site path
+				mkdir($target_path, 0777);
+				if(move_uploaded_file($source, $target_path)) {
+					$zip = new ZipArchive();
+					$x = $zip->open($target_path);
+					if ($x === true) {
+						$zip->extractTo("../games/".$name[1]."/"); // change this to the correct site path
+						$zip->close();
+				
+						unlink($target_path);
+					}
+					$message = "Your .zip file was uploaded and unpacked.";
+				} else {	
+					$message = "There was a problem with the upload. Please try again.";
+				}
+			}
+
+
+// --------------------------------------- ZIP END ----------------------------
+		
+		echo" <script>alert('Product has been added');</script>"; 
+		echo" <script>window.location='all_games.php';</script>"; 
+	}
+	
+	else{
+		echo" <script>alert('Error! Product not added');</script>"; 
+	}
+}
+
+?>
+
 <?php 
 // This block grabs the whole list for viewing
 $user = $_SESSION['admin_manager'];
-$product_list = "";
-$shop_products = mysqli_query($conn,"select * from products") or die(mysqli_error($conn));
+$game_list = "";
+$shop_games = mysqli_query($conn,"select * from games") or die(mysqli_error($conn));
 $productCount = mysqli_affected_rows($conn);
 if ($productCount > 0) {
-	while($row = mysqli_fetch_array($shop_products)){ 
+	while($row = mysqli_fetch_array($shop_games)){ 
              $id = $row["id"];
 			 $name = $row["name"];
-			 $date_added = strftime("%b %d, %Y", strtotime($row["date_added"]));
+			 $image = $row["image"];
+			 $type = $row["type"];
+			 $cost = $row["cost"];
+			 $date_added = strftime("%b %d, %Y", strtotime($row["date_created"]));
 			 
-			 $product_list .= " 
+			 //$gameID = encrypt($id);
+			 $game_list .= " 
  
 				<tr>
-					<td>$name</td> 
+					<td>
+							<div class='product-img'>
+							<img height='30px' width='30px' src='../game_icons/".$image."' alt='Product Image'>
+						  </div>
+					</td> 
+					<td>$name</td>
+					<td>$type</td> 
+					<td>$cost</td> 
 					<td>$date_added</td> 
 					<td><a class='tiny button' href='product_edit.php?pid=$id'>edit</a></td>
-					<td><a class='tiny button' href='all_products.php?deleteid=$id'>delete</a></td>
+					<td><a class='tiny button' href='all_games.php?deleteid=$id'>delete</a></td>
 					
 				  </tr>
 
 			 ";
 				
 	}
-} else {
-	//$product_list = "You have no products listed in your store yet";
+} 
+
+else {
+	//$game_list = "You have no games listed in your store yet";
 }
 ?>
+
+
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>InformaShop | All Products</title>
+    <title>Gamer | All Games</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -122,13 +196,13 @@ if ($productCount > 0) {
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-            All Products
+            All Games
            
           </h1>
           <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Products</a></li>
-            <li class="active">All Products</li>
+            <li><a href="#">Games</a></li>
+            <li class="active">All Games</li>
           </ol>
         </section>
 
@@ -146,14 +220,17 @@ if ($productCount > 0) {
                   <table id="example2" class="table table-bordered table-hover">
                     <thead>
                       <tr>
-						<th>Product Name</th> 
+						<th></th>
+						<th>Game Name</th>
+						<th>Game Type</th>
+						<th>Cost</th>		
 						<th>Date Added</th>
 						<th></th>
 						<th></th>
                       </tr>
                     </thead>
                     <tbody>
-                     <?php echo $product_list; ?>
+                     <?php echo $game_list; ?>
                     </tbody>
                   </table>
                 </div><!-- /.box-body -->
@@ -166,27 +243,39 @@ if ($productCount > 0) {
               <div class="box">
                 <div class="box-header">
                  <h1>
-            New Products
+            New Games
           </h1>
                 </div><!-- /.box-header -->
                   <div class="box-body">
               <div class="row">
                 <div class="col-md-12">
                   <!-- /.form-group -->
-				  <form id="form1" name="form1" method="post" enctype="multipart/form-data" action="all_products.php">
+				  <form id="form1" name="form1" method="post" enctype="multipart/form-data" action="all_games.php">
                   <div class="form-group">
-                    <label for="pname">Product Name</label>
-                    <input name="pname" class="form-control" type="text" id="pname" placeholder="product Name" / required>
+                    <label for="name">Game Name</label>
+                    <input name="name" class="form-control" type="text" id="name" placeholder="Game Name" / required>
                   </div>
-					<div class="form-group">
-					<label for="product_image1">Product Image </label>
-			              <input type="file" name="product_image1" accept="image/*" required/>
-					</div>
 				  <div class="form-group">
-                    <label for="product_desc">Product Description</label>
-                    <textarea name="product_desc" class="form-control" type="text" id="mytextarea" placeholder="Product Description" / required><p></p></textarea>
+                    <label for="type">Game Type</label>
+                    <input name="type" class="form-control" type="text" id="type" placeholder="Game Type" / required>
                   </div>
-					<input type="submit" name="insertButton" id="insertButton" value="Insert product"  class="btn btn-sm btn-default btn-flat pull-right"> 
+				  <div class="form-group">
+					<label for="image">Upload Icon </label>
+			        <input type="file" name="image" accept="image/*" required/>
+				  </div>
+				  <div class="form-group">
+					<label for="gameFile">Upload Game </label>
+			        <input type="file" name="gameFile" accept="application/zip" required/>
+				  </div>
+				  <div class="form-group">
+                    <label for="cost">Game Cost</label>
+                    <input name="cost" class="form-control" type="text" id="cost" placeholder="Game Cost" / required>
+                  </div>
+				  <div class="form-group">
+                    <label for="description">Game Description</label>
+                    <textarea name="description" class="form-control" type="text" id="mytextarea" / required><p></p></textarea>
+                  </div>
+					<input type="submit" name="insertButton" id="insertButton" value="Insert game"  class="btn btn-sm btn-default btn-flat pull-right"> 
                 </form>
                  
                 </div><!-- /.col -->

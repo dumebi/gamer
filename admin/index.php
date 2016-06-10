@@ -12,41 +12,46 @@ include('../storescripts/connect_to_mysql.php');
 <?php 
 // This block grabs the whole list for viewing
 $user = $_SESSION['admin_manager'];
-$product_list = "";
+$game_list = "";
 $sum = '';
-$cards_sum = '';
-$shop_cards = mysqli_query($conn,"select * from cards") or die(mysqli_error($conn));
-$cards_sum = mysqli_affected_rows($conn);
+$account_sum = '';
+$game_accounts = mysqli_query($conn,"select * from account") or die(mysqli_error($conn));
+$account_sum = mysqli_affected_rows($conn);
 
-$shop_products = mysqli_query($conn,"select * from products") or die(mysqli_error($conn));
-$productCount = mysqli_affected_rows($conn);
-if ($productCount > 0) {
-	while($row = mysqli_fetch_array($shop_products)){ 
+$games = mysqli_query($conn,"select * from games") or die(mysqli_error($conn));
+$gameCount = mysqli_affected_rows($conn);
+if ($gameCount > 0) {
+	while($row = mysqli_fetch_array($games)){ 
              $id = $row["id"];
 			 $name = $row["name"];
 			 $image = $row["image"];
-			 $body = $row["body"];
-			 $date_added = $row["date_added"];
+			 $type = $row["type"];
+			 $cost = $row["cost"];
+			 $date_added = strftime("%b %d, %Y", strtotime($row["date_created"]));
 			 
-			 $product_list .= ' 
-				
-				<li class="item">
-                      <div class="product-img">
-                        <img src="../images/products/'.$image.'" alt="Product Image">
-                      </div>
-                      <div class="product-info">
-                        <a href="javascript::;" class="product-title">'.$name.'</a>
-                        
-                      </div>
-                    </li><!-- /.item -->
+			 $game_list .= "
+				<tr>
+					<td>
+							<div class='product-img'>
+							<img height='30px' width='30px' src='../game_icons/".$image."' alt='Product Image'>
+						  </div>
+					</td> 
+					<td>$name</td>
+					<td>$type</td> 
+					<td>$cost</td> 
+					<td>$date_added</td> 
+					<td><a class='tiny button' href='product_edit.php?pid=$id'>edit</a></td>
+					<td><a class='tiny button' href='all_games.php?deleteid=$id'>delete</a></td>
+					
+				  </tr>
 
-			 ';
+			 ";
 			 
 			 
 				
 	}
 } else {
-	$product_list = "You have no products in our database yet";
+	$game_list = "You have no products in our database yet";
 }
 ?>
 <!DOCTYPE html>
@@ -54,7 +59,7 @@ if ($productCount > 0) {
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Hightin Global LTD | User Dashboard</title>
+    <title>Gamer | Admin Dashboard</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -103,19 +108,19 @@ if ($productCount > 0) {
           <div class="row">
             <div class="col-md-6 col-sm-6 col-xs-12">
               <div class="info-box">
-                <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
+                <span class="info-box-icon bg-aqua"><i class="fa fa-gamepad 4x"></i></span>
                 <div class="info-box-content">
-                  <span class="info-box-text">All Products</span>
-                  <span class="info-box-number"><?php echo $productCount ?></span>
+                  <span class="info-box-text">All Games</span>
+                  <span class="info-box-number"><?php echo $gameCount ?></span>
                 </div><!-- /.info-box-content -->
               </div><!-- /.info-box -->
             </div><!-- /.col -->
             <div class="col-md-6 col-sm-6 col-xs-12">
               <div class="info-box">
-                <span class="info-box-icon bg-yellow"><i class="ion ion-bag"></i></span>
+                <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
                 <div class="info-box-content">
-                  <span class="info-box-text">All Cards</span>
-                  <span class="info-box-number"><?php echo $cards_sum ?></span>
+                  <span class="info-box-text">All Users</span>
+                  <span class="info-box-number"><?php echo $account_sum ?></span>
                 </div><!-- /.info-box-content -->
               </div><!-- /.info-box -->
             </div><!-- /.col -->
@@ -129,24 +134,76 @@ if ($productCount > 0) {
           <div class="row">
             <div class="col-md-12">
 
-              <!-- PRODUCT LIST -->
+              <!-- GAME LIST -->
               <div class="box box-primary">
                 <div class="box-header with-border">
-                  <h3 class="box-title">Recently Added Products</h3>
+                  <h3 class="box-title">Recently Added Games</h3>
                   <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                   </div>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                  <ul class="products-list product-list-in-box">
-                   <?php echo $product_list; ?>
-                  </ul>
+                  <div class="table-responsive">
+				
+                  <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+						<th></th>
+						<th>Game Name</th>
+						<th>Game Type</th>
+						<th>Cost</th>		
+						<th>Date Added</th>
+						<th></th>
+						<th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                     <?php echo $game_list; ?>
+                    </tbody>
+                  </table>
+                </div><!-- /.box-body -->
                 </div><!-- /.box-body -->
                 <div class="box-footer text-center">
-                  <a href="all_products.php" class="uppercase">View All Products</a>
+                  <a href="all_games.php" class="uppercase">View All Games</a>
                 </div><!-- /.box-footer -->
               </div><!-- /.box -->
+			  
+			  <!-- USER LIST -->
+			  <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">New Users</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  <div class="table-responsive">
+				
+                  <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+						<th></th>
+						<th>Game Name</th>
+						<th>Game Type</th>
+						<th>Cost</th>		
+						<th>Date Added</th>
+						<th></th>
+						<th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                     <?php echo $game_list; ?>
+                    </tbody>
+                  </table>
+                </div><!-- /.box-body -->
+                </div><!-- /.box-body -->
+                <div class="box-footer text-center">
+                  <a href="all_games.php" class="uppercase">View All Users</a>
+                </div><!-- /.box-footer -->
+              </div><!-- /.box -->
+			  
             </div><!-- /.col -->
           </div><!-- /.row -->
         </section><!-- /.content -->

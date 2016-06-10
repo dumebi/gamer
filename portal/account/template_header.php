@@ -1,3 +1,4 @@
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
 <?php
 include('../../storescripts/connect_to_mysql.php');
 session_start();
@@ -14,7 +15,7 @@ $sql = mysqli_query($conn, "SELECT * FROM user WHERE username='$user' LIMIT 1");
 		 while($row = mysqli_fetch_array($sql)){ 
              $email = $row["email"];
 			 $image = $row["image"];
-			$picture = "dist/img/profile/".$image."";
+			$picture = "../dist/img/profile/".$image."";
 		 }
     }
 }
@@ -139,7 +140,7 @@ else{
               </ul>
             </li>
 			<li>
-              <a href="account/stats.php">
+              <a href="game/newgame.php">
                 <i class="material-icons">gamepad</i> <span>New Game</span> 
               </a>
             </li>

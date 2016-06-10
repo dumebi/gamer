@@ -1,8 +1,3 @@
-<?php
-//connecting to database
-include_once('../storescripts/connect_to_mysql.php');
-?>
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -15,8 +10,6 @@ include_once('../storescripts/connect_to_mysql.php');
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- jvectormap -->
     <link rel="stylesheet" href="plugins/jvectormap/jquery-jvectormap-1.2.2.css">
     <!-- Theme style -->
@@ -57,7 +50,7 @@ include_once('../storescripts/connect_to_mysql.php');
           <div class="row">
             <div class="col-md-6 col-sm-6 col-xs-12">
               <div class="info-box">
-                <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
+                <span class="info-box-icon bg-aqua"><i class="fa fa-gamepad 3x"></i></span>
                 <div class="info-box-content">
                   <span class="info-box-text">All Products</span>
                   <span class="info-box-number"><?php //echo $productCount ?></span>
@@ -66,7 +59,7 @@ include_once('../storescripts/connect_to_mysql.php');
             </div><!-- /.col -->
             <div class="col-md-6 col-sm-6 col-xs-12">
               <div class="info-box">
-                <span class="info-box-icon bg-red"><i class="ion ion-bag"></i></span>
+                <span class="info-box-icon bg-red"><i class="fa fa-user 3x"></i></span>
                 <div class="info-box-content">
                   <span class="info-box-text">Visited Products</span>
                   <span class="info-box-number"><?php //echo $sum ?></span>

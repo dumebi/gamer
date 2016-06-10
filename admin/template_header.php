@@ -86,21 +86,21 @@ $user = $_SESSION['admin_manager'];
               <a href="all_products.php">
 			    <?php
 			 include_once('../storescripts/connect_to_mysql.php');
-				$shop_products = mysqli_query($conn,"select * from Games") or die(mysqli_error($conn));
-				$productCount = mysqli_affected_rows($conn);
+				$games = mysqli_query($conn,"select * from Games") or die(mysqli_error($conn));
+				$gameCount = mysqli_affected_rows($conn);
 				 // count the output amount
 			  ?>
-                <i class="fa fa-th"></i> <span> View all Games</span> <small class="label pull-right bg-green"><?php echo $productCount ?></small>
+                <i class="fa fa-gamepad"></i> <span> View all Games</span> <small class="label pull-right bg-green"><?php echo $gameCount ?></small>
               </a>
             </li>
 			 <li>
               <a href="all_cards.php">
 			    <?php
-				$card_products = mysqli_query($conn,"select * from account") or die(mysqli_error($conn));
-				$cardCount = mysqli_affected_rows($conn);
+				$game_users = mysqli_query($conn,"select * from account") or die(mysqli_error($conn));
+				$userCount = mysqli_affected_rows($conn);
 				 // count the output amount
 			  ?>
-                <i class="fa fa-th"></i> <span> View all Users</span> <small class="label pull-right bg-green"><?php echo $cardCount ?></small>
+                <i class="fa fa-users"></i> <span> View all Users</span> <small class="label pull-right bg-green"><?php echo $userCount ?></small>
               </a>
             </li>
 			 <li>
