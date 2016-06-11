@@ -32,8 +32,7 @@ if (isset($_GET['yesdelete'])) {
 							unlink($pictodelete);
 				}
 		}
-		header("location: all_games.php"); 
-		exit();
+		echo" <script>window.location='all_games.php';</script>";
 	}
 }
 ?>
@@ -77,13 +76,12 @@ if(isset($_POST['insertButton'])){
 					$message = "The file you are trying to upload is not a .zip file. Please try again.";
 				}
 
-				$target_path = "../games/".$name[0];  // change this to the correct site path
-				mkdir($target_path, 0777);
+				$target_path = "../games/".$filename;  // change this to the correct site path
 				if(move_uploaded_file($source, $target_path)) {
 					$zip = new ZipArchive();
 					$x = $zip->open($target_path);
 					if ($x === true) {
-						$zip->extractTo("../games/".$name[1]."/"); // change this to the correct site path
+						$zip->extractTo("../games/"); // change this to the correct site path
 						$zip->close();
 				
 						unlink($target_path);
@@ -93,7 +91,6 @@ if(isset($_POST['insertButton'])){
 					$message = "There was a problem with the upload. Please try again.";
 				}
 			}
-
 
 // --------------------------------------- ZIP END ----------------------------
 		

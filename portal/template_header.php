@@ -179,6 +179,11 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
               </a>
             </li>
 			<li>
+              <a href="invite.php">
+                <i class="fa fa-user-plus"></i> <span>Invite Friends</span> 
+              </a>
+            </li>
+			<li>
               <a href="signout.php">
                 <i class="fa fa-sign-out"></i> <span>Log Out</span> 
               </a>

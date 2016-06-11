@@ -1,6 +1,7 @@
 <?php
 //connecting to database
 include_once('../../storescripts/connect_to_mysql.php');
+include_once('../../storescripts/crypto.php');
 if(isset($_GET['game'])){
 	
 }
