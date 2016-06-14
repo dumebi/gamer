@@ -1,7 +1,11 @@
 <?php
 //connecting to database
 include('../storescripts/connect_to_mysql.php');
-//include('../storescripts/crypto.php');
+include('../storescripts/crypto.php');
+ini_set('upload_max_filesize', '10M');
+ini_set('post_max_size', '10M');
+ini_set('max_input_time', 300);
+ini_set('max_execution_time', 300);
 session_start();
 if (!isset($_SESSION["admin_manager"])) {
    echo" <script>window.location='login.php';</script>"; 
@@ -73,7 +77,7 @@ if(isset($_POST['insertButton'])){
 				
 				$continue = strtolower($name[1]) == 'zip' ? true : false;
 				if(!$continue) {
-					$message = "The file you are trying to upload is not a .zip file. Please try again.";
+				echo "The file you are trying to upload is not a .zip file. Please try again.";
 				}
 
 				$target_path = "../games/".$filename;  // change this to the correct site path
@@ -86,9 +90,9 @@ if(isset($_POST['insertButton'])){
 				
 						unlink($target_path);
 					}
-					$message = "Your .zip file was uploaded and unpacked.";
+				echo "Your .zip file was uploaded and unpacked.";
 				} else {	
-					$message = "There was a problem with the upload. Please try again.";
+				echo "There was a problem with the upload. Please try again.";
 				}
 			}
 

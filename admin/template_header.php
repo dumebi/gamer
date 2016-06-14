@@ -83,10 +83,10 @@ $user = $_SESSION['admin_manager'];
             </li>
             
             <li>
-              <a href="all_products.php">
+              <a href="all_games.php">
 			    <?php
 			 include_once('../storescripts/connect_to_mysql.php');
-				$games = mysqli_query($conn,"select * from Games") or die(mysqli_error($conn));
+				$games = mysqli_query($conn,"select * from games") or die(mysqli_error($conn));
 				$gameCount = mysqli_affected_rows($conn);
 				 // count the output amount
 			  ?>

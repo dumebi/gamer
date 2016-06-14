@@ -56,7 +56,7 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 							$gamecurrent = '<li><a href="game/?game='.$id.'"><i class="fa fa-circle-o"></i> '.$game_name.'</a></li>';
 						}
 						
-							$games = $gamecurrent ."</br>".$gamepending;
+							$games = $gamecurrent ."\n".$gamepending;
 					}
 				}
 				else{

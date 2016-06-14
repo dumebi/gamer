@@ -26,7 +26,9 @@ if (isset($_POST["regButton"])) {
    $insert_pro = mysqli_query($conn, $insert_user);
 	
 	if($insert_pro){
-
+$insert_account = "insert into user (username, amount, date_added) values('$username', 0, now())"; 
+	// insert into the database
+   $insert_new = mysqli_query($conn, $insert_account);
 		
 		
 	echo "<script>alert('Thank you for Registering. Proceed to Login')</script>";

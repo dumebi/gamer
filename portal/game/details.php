@@ -2,9 +2,52 @@
 //connecting to database
 include_once('../../storescripts/connect_to_mysql.php');
 include_once('../../storescripts/crypto.php');
-if(isset($_GET['game'])){
-	
+if(isset($_GET['g'])){
+	$gameID = $_GET['g'];
+	$id = decrypt($gameID);
+	$game ='';
+$sql = "select * from games where id=".$id."";
+$game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
+			$gameCount = mysqli_affected_rows($conn);
+				$games = '';
+				if ($gameCount > 0) {
+					while($row = mysqli_fetch_array($game_query)){ 
+					$id = $row['id'];
+					$name = $row['name'];
+					$image = $row['image'];
+					$type = $row['type'];
+					$cost = $row['cost'];
+					$description = $row['description'];
+					
+					$games .= '
+						  <!-- /.box-header -->
+            <div class="box-body">
+              <div class="col-md-6 col-sm-6 col-xs-12">
+				   <div class="product-img">
+							<img class="img-responsive"  src="../../game_icons/'.$image.'" alt="Product Image">
+						  </div>
+			  </div>
+			  <div class="col-md-6 col-sm-6 col-xs-12">
+				   <h3>'.$name.'</h3>
+				   <div class="col-md-6 col-sm-6 col-xs-6">
+					<p>'.$type.'</p>
+				   </div>
+				   <div class="col-md-6 col-sm-6 col-xs-6">
+				   <p>'.$cost.'</p>
+					</div>
+				   <p>
+				   '.$description.'
+				   </p>
+				   <a class="btn btn-sm btn-default btn-flat pull-left" href="add.php?new='.$gameID.'">Add Game</a>
+			  </div>
+            </div>
+            <!-- /.box-body -->
+					';
+					}
+				}
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +55,7 @@ if(isset($_GET['game'])){
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Gamer | User Dashboard</title>
+    <title>Gamer | <?php echo $name ?></title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -49,174 +92,13 @@ if(isset($_GET['game'])){
 
         <!-- Main content -->
                 <section class="content">
-          <!-- Info boxes -->
-          <div class="row">
-           <div class="col-md-6 col-sm-6 col-xs-12">
-			  <div class="col-md-3 col-sm-3 col-xs-3">
-				   <h3>
-					2000
-					<small>points</small>
-					
-				  </h3>
-			  </div> 
-			  <div class="col-md-3 col-sm-3 col-xs-3">
-				   <h3>
-					#5
-					<small>Rank</small>
-				  </h3>
-				  
-			  </div> 
-			  <div class="col-md-3 col-sm-3 col-xs-3">
-				   <h3>
-					2000/<strong>4000</strong>
-					<small>Experience</small>
-				  </h3>
-			  </div>
-            </div><!-- /.col -->
-            <div class="col-md-6 col-sm-6 col-xs-12">
-			  <div class="col-md-3 col-sm-3 col-xs-3">
-				   <h3>
-					0
-					<small>Day(s)</small>
-				  </h3>
-			  </div> 
-			  <div class="col-md-3 col-sm-3 col-xs-3">
-				   <h3>
-					5
-					<small>Hr(s)</small>
-				  </h3>
-			  </div>
-			  <div class="col-md-3 col-sm-3 col-xs-3">
-				   <h3>
-					12
-					<small>Minute(s)</small>
-				  </h3>
-			  </div>
-			  <div class="col-md-3 col-sm-3 col-xs-3">
-				   <h3>
-					11
-					<small>Sec(s)</small>
-				  </h3>
-			  </div>
-            </div><!-- /.col -->
-
-            <!-- fix for small devices only -->
-            <div class="clearfix visible-sm-block"></div>
-
-           
-          </div><!-- /.row -->
 
 		  
 		  <div class="row">
             <div class="col-md-12">
             <div class="box">
             
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="col-md-6 col-sm-6 col-xs-12">
-				   <div class='product-img'>
-							<img class="img-responsive"  src='../../game_icons/hightin.jpg' alt='Product Image'>
-						  </div>
-			  </div>
-			  <div class="col-md-6 col-sm-6 col-xs-12">
-				   <h3>Game Name</h3>
-				   <div class="col-md-6 col-sm-6 col-xs-6">
-					<p>Type</p>
-				   </div>
-				   <div class="col-md-6 col-sm-6 col-xs-6">
-				   <p>Cost</p>
-					</div>
-				   <p>
- This file is not intended to serve as a complete backup of your site. 
-
-
- To import this information into a WordPress site follow these steps: 
-
-  1. Log in to that site as an administrator.  -->
-
- 2. Go to Tools: Import in the WordPress admin panel. 
-
-  3. Install the "WordPress" importer from the list.  
-  4. Activate & Run Importer.  
-
- 5. Upload this file using the form provided on that page. 
-
-
- 6. You will first be asked to map the authors in this export file to users 
-    on the site. For each author, you may choose to map to an 
-
-     existing user on the site or to create a new user.  
-
- 7. WordPress will then import each of the posts, pages, comments, categories, etc. 
-
-     contained in this file into your site. 
-				   </p>
-				   <a class="btn btn-sm btn-default btn-flat pull-left">Play Game</a>
-			  </div>
-            </div>
-            <!-- /.box-body -->
-          </div>
-            </div><!-- /.col -->
-          </div><!-- /.row -->
-		  
-          <div class="row">
-            <div class="col-md-12">
-                       <div class="box">
-            <div class="box-header">
-              <i class="fa fa-bar-chart"></i> <h3 class="box-title">LeaderBoard</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <table class="table table-condensed">
-                <tr>
-                  <th>Name</th>
-                  <th>Score</th>
-                  <th>Position</th>
-				  <th>Price</th>
-                </tr>
-                <tr>
-                  <td>Update software</td>
-                  <td>
-                    2000
-                  </td>
-                  <td><i class="material-icons">looks_one</i></td>
-				  <td>N5000</td>
-                </tr>
-                <tr>
-                  <td>Clean database</td>
-                  <td>
-                    1800
-                  </td>
-                  <td><i class="material-icons">looks_two</i></td>
-				  <td>N4000</td>
-                </tr>
-                <tr>
-                  <td>Cron job running</td>
-                  <td>
-                    1600
-                  </td>
-                  <td></td>
-				  <td>N5000</td>
-                </tr>
-                <tr>
-                  <td>Fix and squish bugs</td>
-                  <td>
-                    1500
-                  </td>
-                  <td></td>
-				  <td>N5000</td>
-                </tr>
-				<tr>
-                  <td>Fix and squish bugs</td>
-                  <td>
-                    1200
-                  </td>
-                 <td></td>
-				 <td>N5000</td>
-                </tr>
-              </table>
-            </div>
-            <!-- /.box-body -->
+          <?php echo $games; ?>
           </div>
             </div><!-- /.col -->
           </div><!-- /.row -->

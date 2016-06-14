@@ -3,14 +3,43 @@
 include_once('../../storescripts/connect_to_mysql.php');
 include_once('../../storescripts/crypto.php');
 
-$sql = "select * from games order by ";
+$sql = "select * from games order by name ASC";
 $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 			$gameCount = mysqli_affected_rows($conn);
 				$games = '';
-				$gamepending = '';
-				$gamecurrent = '';
 				if ($gameCount > 0) {
 					while($row = mysqli_fetch_array($game_query)){ 
+					$id = $row['id'];
+					$name = $row['name'];
+					$image = $row['image'];
+					$cost = $row['cost'];
+					
+					$gameID = encrypt($id); 
+					$games.= '
+							<!---------		Game -------->
+				  <div class="col-md-4 col-sm-6 col-xs-12">
+					<div class="box">
+					<!-- /.box-header -->
+					<a href="details.php?g='.$gameID.'" style="color: inherit; cursor: pointer; cursor: hand;">
+					<div class="box-body">
+						   <div class="product-img">
+									<img class="img-responsive" src="../../game_icons/'.$image.'" alt="Product Image">
+							</div>
+							<div class="col-md-12 col-sm-12 col-xs-12">
+						   <h4>'.$name.' <span class="label pull-right bg-green"> '.$cost.' <i class="fa fa-shopping-cart"></i></span></h4> 
+						   </div>
+						   <div class="col-md-12 col-sm-12 col-xs-12">
+						   <p>Type<i class="fa fa-gamepad fa-lg pull-right"></i></p>
+						   </div>
+					  </div>
+					</a>
+					</div>
+					<!-- /.box-body -->
+				  </div>
+				<!---------		Game End -------->
+					';
+					}
+				}
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +47,7 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Gamer | User Dashboard</title>
+    <title>Gamer | All Games</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -74,33 +103,13 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 								
 						</div>
 						<div class="col-md-3 col-sm-4 col-xs-6">
-						<h3 class="text-muted">(3,000 Results)</h3>
+						<h3 class="text-muted">(<?php echo $gameCount; ?> Results)</h3>
 						</div>
 						</div>
 					</div>
 			</div>
             <div class="col-md-12">
-				<!---------		Game -------->
-				  <div class="col-md-4 col-sm-6 col-xs-12">
-					<div class="box">
-					<!-- /.box-header -->
-					<a style="color: inherit; cursor: pointer; cursor: hand;">
-					<div class="box-body">
-						   <div class='product-img'>
-									<img class="img-responsive"  src='../../game_icons/hightin.jpg' alt='Product Image'>
-							</div>
-							<div class="col-md-12 col-sm-12 col-xs-12">
-						   <h4>Game Name <span class="label pull-right bg-green"> Cost <i class="fa fa-shopping-cart"></i></span></h4> 
-						   </div>
-						   <div class="col-md-12 col-sm-12 col-xs-12">
-						   <p>Type<i class="fa fa-gamepad fa-lg pull-right"></i></p>
-						   </div>
-					  </div>
-					</a>
-					</div>
-					<!-- /.box-body -->
-				  </div>
-				<!---------		Game End -------->
+				<?php echo $games ?>
 				
 
             </div><!-- /.col -->
