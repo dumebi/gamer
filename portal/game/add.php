@@ -94,7 +94,7 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 							}
 						
 				}
-				//if players are already more than 5. increase the id, create new tournament and add this person 
+				//if players are already 5. increase the id, create new tournament and add this person 
 				if ($gameCount == 5) {
 						$gid='';
 						while($row = mysqli_fetch_array($game_query)){ 
@@ -107,12 +107,13 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 										}
 				}
 				
-				
+				//if players are more than 5
 				if ($gameCount > 5) {
+					$result = ($gameCount % 5);
 					// if more than 5 players but not a multiple of 5
-						if ($gameCount % 5 != 0) {
+						if ($result != 0) {
 							//if remains one more for tournament members to be complete eg 9, 14 etc
-							if ($gameCount % 5 == 4) {
+							if ($result == 4) {
 							$sql = "select max(id) from game_play where game_id=".$id."";
 								$game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 								$gameCount = mysqli_affected_rows($conn);
@@ -121,14 +122,22 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 									$gid = $row[0];
 									}
 							$insertCard = mysqli_query($conn, 'Insert into game_play (id, username, game_id, game_score, game_status, game_end, date_created) values ( '.($gid).', "'.$user.'", "'.$id.'", 0, "pending", now(), now())');
-							$updateCard = mysqli_query($conn, 'update game_play set game_status = "active", game_end = now() + interval 3 day ');
-									if($insertCard && $updateCard){
+							//is now more than 5...activeate and set end date +3
+						$updateCard = mysqli_query($conn, 'update game_play set game_status = "active", game_end = now() + interval 3 day where id='.($gid).'') or die(mysqli_error($conn));
+										//if User has not already been added into this challenge, it works....if not!
+										if($insertCard && $updateCard){
 											echo" <script>alert(Your Game has been added!)</script>"; 
-											echo" <script>window.location='index.php';</script>"; 
+											echo" <script>window.location='../index.php';</script>"; 
+										}
+										else{
+											echo" <script>alert('Error! You have already been added');</script>"; 
+											echo" <script>window.location='../index.php';</script>"; 
 										}
 									}
-							else{
-								// if still needs more ie 6,7 etc
+							//------------------- End if ($result == 4) ------------------------
+							
+							// if still needs more ie 6,7 etc
+							elseif($result < 4){
 								$sql = "select max(id) from game_play where game_id=".$id."";
 								$game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 								$gameCount = mysqli_affected_rows($conn);
@@ -142,9 +151,11 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 											echo" <script>window.location='index.php';</script>"; 
 										}
 							}
+							//------- End elseif($result < 4) ----------------------------
 						}
-							else{
-								//if more than 5 and a multiple of 5. increase the id, create new tournament and add this person 
+						
+					//if more than 5 and a multiple of 5. increase the id, create new tournament and add this person 	
+					elseif ($result == 0){
 									$sql = "select max(id) from game_play where game_id=".$id."";
 									$game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 									$gameCount = mysqli_affected_rows($conn);
@@ -152,12 +163,18 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 										while($row = mysqli_fetch_array($game_query)){ 
 										$gid = $row[0];
 										}
-					$insertCard = mysqli_query($conn, 'Insert into game_play (id, username, game_id, game_score, game_status, game_end, date_created) values ( '.($gid+1).', "'.$user.'", "'.$id.'", 0, "pending", now()+ interval 3 day, now())');
-									if($insertCard){
-											echo" <script>alert(Your Game has been added!)</script>"; 
-											echo" <script>window.location='index.php';</script>"; 
+										$insertCard = mysqli_query($conn, 'Insert into game_play (id, username, game_id, game_score, game_status, game_end, date_created) values ( '.($gid+1).', "'.$user.'", "'.$id.'", 0, "pending", now()+ interval 3 day, now())');
+									//if User has not already been added into this challenge, it works....if not!
+								if($insertCard){
+											echo" <script>alert('Your Game has been added');</script>"; 
+											echo" <script>window.location='../index.php';</script>"; 
+										}
+										else{
+											echo" <script>alert('Error! You have already been added');</script>"; 
+											echo" <script>window.location='../index.php';</script>"; 
 										}
 							}
+					//---------------------- End IF ---------------------------
 				}
 }
 

@@ -1,4 +1,6 @@
 <?php
+include_once('../../storescripts/connect_to_mysql.php');
+include_once('../../storescripts/crypto.php');
 session_start();
 $user = '';
 $email = '';
@@ -33,10 +35,40 @@ else{
 }
 
 ?>     
+<?php 
+$sql = "select game_play.game_id, game_play.game_status, games.name from games join game_play on game_play.game_id = games.id where game_play.username = '".$user."' and game_play.game_status != 'expired' order by games.name ASC";
+$game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
+			$gameCount = mysqli_affected_rows($conn);
+				$games = '';
+				$gamepending = '';
+				$gamecurrent = '';
+				if ($gameCount > 0) {
+					while($row = mysqli_fetch_array($game_query)){ 
+					$gameID = $row[0];
+					$game_status = $row[1];
+					$game_name = $row[2];
+					
+						$id = encrypt($gameID);
+						if($game_status == 'pending'){
+							$gamepending = '<li><a href="index.php?game='.$id.'"><i class="fa fa-circle-o text-red"></i> <span>'.$game_name.'</span> <small class="label pull-right bg-red">Pending</small></a></li>';
+						}
+						else{
+							$gamecurrent = '<li><a href="index.php?game='.$id.'"><i class="fa fa-circle-o"></i> '.$game_name.'</a></li>';
+						}
+						
+							$games = $gamecurrent ."\n".$gamepending;
+					}
+				}
+				else{
+					$games = '<li><a><i class="fa fa-exclamation-triangle"></i>No Registered game yet</a></li>';
+				}
+?>
+			  
+                
 	 <header class="main-header">
 
         <!-- Logo -->
-        <a href="../index.php" class="logo">
+        <a href="index.php" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>G</b></span>
           <!-- logo for regular state and mobile devices -->
@@ -61,7 +93,7 @@ else{
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <img src="<?php echo $picture ?>" class="user-image" alt="User Image">
-                  <span class="hidden-xs"><?php echo $email ?></span>
+                  <span class="hidden-xs"><?php echo $user ?></span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
@@ -69,7 +101,7 @@ else{
                     <img src="<?php echo $picture ?>" class="img-circle" alt="User Image">
                     <p>
                       <?php echo $user ?> - Gamer
-                      
+                      <?php echo $email ?>
                     </p>
                   </li>
                   
@@ -122,7 +154,7 @@ else{
           <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
             <li class="active treeview">
-              <a href="../index.php">
+              <a href="index.php">
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span> 
               </a>
             </li>
@@ -130,21 +162,25 @@ else{
               <a href="#">
                 <i class="fa fa-gamepad"></i>
                 <span>My Games</span>
-                <span class="label label-primary pull-right"></span>
+				<i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="pages/deals/all_deals.php"><i class="fa fa-circle-o"></i> New Game</a></li>
-				<li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
+					<?php echo $games; ?>
               </ul>
             </li>
 			<li>
-              <a href="account/stats.php">
-                <i class="material-icons">gamepad </i>New Game <span></span> 
+              <a href="game/new.php">
+                <i class="fa fa-plus-square"></i> <span>New Game</span> 
               </a>
             </li>
 			<li>
               <a href="account/refill.php">
                 <i class="fa fa-refresh"></i> <span>Refill Account</span> 
+              </a>
+            </li>
+			<li>
+              <a href="invite.php">
+                <i class="fa fa-user-plus"></i> <span>Invite Friends</span> 
               </a>
             </li>
 			<li>

@@ -1,25 +1,15 @@
-<?php
-//connecting to database
-include_once('../../storescripts/connect_to_mysql.php');
-if(isset($_GET['game'])){
-	
-}
-?>
-
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Gamer | User Dashboard</title>
+    <title>Gamer | Game Dashboard </title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- jvectormap -->
     <link rel="stylesheet" href="../plugins/jvectormap/jquery-jvectormap-1.2.2.css">
     <!-- Theme style -->
@@ -27,7 +17,6 @@ if(isset($_GET['game'])){
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="../dist/css/skins/_all-skins.css">
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -40,27 +29,122 @@ if(isset($_GET['game'])){
     <div class="wrapper">
 
  <?php include_once("template_header.php"); ?>
+ <?php
+ $end_time = '';
+//connecting to database
+if(isset($_GET['game'])){
+	$eid = $_GET['game'];
+	$id = decrypt($eid);
+	$newformat = '';
+	$game_end = '';
+	$games = '';
+	$sql = "select games.name, games.type, games.image, games.location, games.cost, games.description, game_play.game_score, game_play.game_status, game_play.game_end from games join game_play on game_play.game_id = games.id where game_play.username = '".$user."' and game_play.game_id = '".$id."'";
+	$game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
+	
+			$gameCount = mysqli_affected_rows($conn);
+				if ($gameCount > 0) {
+					while($row = mysqli_fetch_array($game_query)){ 
+						$name = $row['name'];
+						$type = $row['type'];
+						$image = $row['image'];
+						$location = $row['location'];
+						$cost = $row['cost'];
+						$description = $row[5];
+						$game_score = $row[6];
+						$game_status = $row[7];
+						$game_end = $row[8];
+						}
+						
+						$end_time = date("n/j/Y g:i:s A", strtotime($game_end));
+						echo '<script>window.alert("'.$end_time.'");</script>';
+					
+				}
+}
+?>
+<?php
+if(isset($_GET['game'])){
+	$eid = $_GET['game'];
+	$id = decrypt($eid);
+$sql = "select username, game_score, @curRank := @curRank + 1 As rank from game_play , (Select @curRank := 0 ) r where id = (select id from game_play where username = '".$user."' and game_id = '".$id."') order by game_score ";
+	$game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
+	
+			$gameCount = mysqli_affected_rows($conn);
+				if ($gameCount > 0) {
+					while($row = mysqli_fetch_array($game_query)){
+								
+					}
+				}
+}
+?>
+<?php
+if(isset($_GET['game'])){
+	$eid = $_GET['game'];
+	$id = decrypt($eid);
+	$rank = '';
+$ssql = "select username, game_score, @curRank := @curRank + 1 As rank from game_play , (Select @curRank := 0 ) r where id = (select id from game_play where username = '".$user."' and game_id = '".$id."') and username = '".$user."' order by game_score ";
+	$games_query = mysqli_query($conn,$ssql) or die(mysqli_error($conn));
+	
+			$gamesCount = mysqli_affected_rows($conn);
+				if ($gamesCount > 0) {
+					while($rows = mysqli_fetch_array($games_query)){
+						$rank = $rows['rank'];		
+					}
+				}
+}
+?>
+<script>
 
+var end = new Date('<?php echo $end_time ?>');
+//var end = new Date('08/12/2016 02:00 PM');
+
+var _second = 1000;
+var _minute = _second * 60;
+var _hour = _minute * 60;
+var _day = _hour * 24;
+var timer;
+
+function showRemaining() {
+    var now = new Date();
+    var distance = end - now;
+    if (distance < 0) {
+		
+        clearInterval(timer);
+        document.getElementById('countdown').innerHTML = 'EXPIRED!';
+
+        return;
+    }
+    var days = Math.floor(distance / _day);
+    var hours = Math.floor((distance % _day) / _hour);
+    var minutes = Math.floor((distance % _hour) / _minute);
+    var seconds = Math.floor((distance % _minute) / _second);
+	
+    document.getElementById('day-number').innerHTML = days;
+    document.getElementById('hour-number').innerHTML = hours;
+    document.getElementById('minute-number').innerHTML = minutes;
+    document.getElementById('second-number').innerHTML = seconds;
+}
+timer = setInterval(showRemaining, 1000);
+</script>
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
        
 
         <!-- Main content -->
-                <section class="content">
+        <section class="content">
           <!-- Info boxes -->
           <div class="row">
            <div class="col-md-6 col-sm-6 col-xs-12">
 			  <div class="col-md-3 col-sm-3 col-xs-3">
 				   <h3>
-					2000
+					<?php echo $game_score ?>
 					<small>points</small>
 					
 				  </h3>
 			  </div> 
 			  <div class="col-md-3 col-sm-3 col-xs-3">
 				   <h3>
-					#5
+					#<?php echo $rank ?>
 					<small>Rank</small>
 				  </h3>
 				  
@@ -72,33 +156,32 @@ if(isset($_GET['game'])){
 				  </h3>
 			  </div>
             </div><!-- /.col -->
-            <div class="col-md-6 col-sm-6 col-xs-12">
-			  <div class="col-md-3 col-sm-3 col-xs-3">
+            <div id="countdown" class="col-md-6 col-sm-6 col-xs-12">
+			  <div  class="col-md-3 col-sm-3 col-xs-3">
 				   <h3>
-					0
+					<span id="day-number">11</span>
 					<small>Day(s)</small>
 				  </h3>
 			  </div> 
 			  <div class="col-md-3 col-sm-3 col-xs-3">
 				   <h3>
-					5
+					<span id="hour-number">11</span>
 					<small>Hr(s)</small>
 				  </h3>
 			  </div>
 			  <div class="col-md-3 col-sm-3 col-xs-3">
 				   <h3>
-					12
+					<span id="minute-number">11</span>
 					<small>Minute(s)</small>
 				  </h3>
 			  </div>
 			  <div class="col-md-3 col-sm-3 col-xs-3">
 				   <h3>
-					11
+					<span id="second-number">11</span>
 					<small>Sec(s)</small>
 				  </h3>
 			  </div>
             </div><!-- /.col -->
-
             <!-- fix for small devices only -->
             <div class="clearfix visible-sm-block"></div>
 
@@ -114,43 +197,19 @@ if(isset($_GET['game'])){
             <div class="box-body">
               <div class="col-md-6 col-sm-6 col-xs-12">
 				   <div class='product-img'>
-							<img class="img-responsive"  src='../../game_icons/hightin.jpg' alt='Product Image'>
+							<img class="img-responsive"  src='../../game_icons/<?php echo $image ?>' alt='Product Image'>
 						  </div>
 			  </div>
 			  <div class="col-md-6 col-sm-6 col-xs-12">
-				   <h3>Game Name</h3>
+				   <h3><?php echo $name ?></h3>
 				   <div class="col-md-6 col-sm-6 col-xs-6">
-					<p>Type</p>
+					<p><?php echo $type ?></p>
 				   </div>
 				   <div class="col-md-6 col-sm-6 col-xs-6">
-				   <p>Cost</p>
+				   <p><?php echo $cost ?></p>
 					</div>
-				   <p>
- This file is not intended to serve as a complete backup of your site. 
-
-
- To import this information into a WordPress site follow these steps: 
-
-  1. Log in to that site as an administrator.  -->
-
- 2. Go to Tools: Import in the WordPress admin panel. 
-
-  3. Install the "WordPress" importer from the list.  
-  4. Activate & Run Importer.  
-
- 5. Upload this file using the form provided on that page. 
-
-
- 6. You will first be asked to map the authors in this export file to users 
-    on the site. For each author, you may choose to map to an 
-
-     existing user on the site or to create a new user.  
-
- 7. WordPress will then import each of the posts, pages, comments, categories, etc. 
-
-     contained in this file into your site. 
-				   </p>
-				   <a class="btn btn-sm btn-default btn-flat pull-left">Play Game</a>
+				   <?php echo $description ?>
+				   <a href="../../games/<?php echo $location ?>" class="btn btn-sm btn-default btn-flat pull-left">Play Game</a>
 			  </div>
             </div>
             <!-- /.box-body -->
@@ -229,6 +288,7 @@ if(isset($_GET['game'])){
 
     <!-- jQuery 2.1.4 -->
     <script src="../plugins/jQuery/jQuery-2.1.4.min.js"></script>
+	<script src="jquery.min.js"></script>
     <!-- Bootstrap 3.3.5 -->
     <script src="../bootstrap/js/bootstrap.min.js"></script>
     <!-- FastClick -->
@@ -248,5 +308,6 @@ if(isset($_GET['game'])){
     <script src="../dist/js/pages/dashboard2.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="../dist/js/demo.js"></script>
+    
   </body>
 </html>
