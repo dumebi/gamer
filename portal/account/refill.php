@@ -55,8 +55,10 @@
 							<label for="Amount">Username</label>
 							<input name="amount" class="form-control" type="text" id="amount" placeholder="Amount (eg 5000 for N5,000)" / required>
 						  </div>
-					<input type="image" id="btn-checkout" src="http://assets.simplepay.ng/buttons/pay_medium_dark.png" />	  
-                </form>
+				<div  align="center">
+					<input  type="image" id="btn-checkout" src="http://assets.simplepay.ng/buttons/pay_medium_dark.png" />	  
+                </div>
+				</form>
                  
                 </div><!-- /.col -->
           </div><!-- /.row -->
@@ -85,34 +87,39 @@
      <script type="text/javascript">
         // Use the "token" to validate the payment
         function processPayment (token) {
-            // put token and transaction ID to be sent forward
-            $('#token').val(token);
+				// implement your code here - we call this after a token is generated
+				// example:
+				var form = $('#checkout_form');
+				form.append(
+					$('<input />', { name: 'token', type: 'hidden', value: token })
+				);
+				form.submit();
+			}
 
-            $('#checkout_form').submit();
-        }
+			// Configure SimplePay's Gateway
+			var handler = SimplePay.configure({
+			   token: processPayment, // callback function to be called after token is received
+			   key: 'test_pu_3edd8283663645e3871feb2a9977e650', // place your api key. Demo: test_pu_*. Live: pu_*
+			   image: 'http://' // optional: an url to an image of your choice
+			});
 
-        var handler = SimplePay.configure({
-           token: processPayment,
-           key: 'test_pu_3edd8283663645e3871feb2a9977e650',
-           image: ''//put your logo here (please note you need to put a public web url)
-        });
+       $('#btn-checkout').on('click', function (e) { // add the event to your "pay" button
+			e.preventDefault();
 
-        $('#btn-checkout').on('click', function (e) {
-            e.preventDefault();
-            
-            handler.open(SimplePay.CHECKOUT,
-            {
-               email: 'support@gamer.com',
-               phone: '+2348183642720',
-               description: 'My Test Store Checkout 123-456',
-               address: '31 Kade St, Abuja, Nigeria',
-               postal_code: '110001',
-               city: 'Abuja',
-               country: 'NG',
-               amount: SimplePay.amountToLower($('#amount').val()),
-               currency: 'NGN'
-            });
-        });
+			handler.open(SimplePay.CHECKOUT, // type of payment
+			{
+			   email: '<?php echo $email ?>', // optional: user's email
+			   phone: '', // optional: user's phone number
+			   description: '<?php echo $user ?>', // a description of your choosing
+			   address: '31 Kade St, Abuja, Nigeria', // user's address
+			   postal_code: '110001', // user's postal code
+			   city: 'Abuja', // user's city
+			   country: 'NG', // user's country
+			   amount: '110000', // value of the purchase, ₦ 1100
+			   currency: 'NGN' // currency of the transaction
+			});
+		});
+
     </script>
   </body>
 </html>
