@@ -96,8 +96,8 @@ if (isset($authUrl)){
 		$statement = $mysqli->prepare("INSERT INTO google_users (google_id, google_name, google_email, google_link, google_picture_link) VALUES (?,?,?,?,?)");
 		$statement->bind_param('issss', $user->id,  $user->name, $user->email, $user->link, $user->picture);
 		$statement->execute();
-		$account = $mysqli->prepare("INSERT INTO account (username, amount, date_added) VALUES (?,?,?)");
-		$account->bind_param('sis', $user->name, 0, 'now()');
+		$account = $mysqli->prepare("INSERT INTO account (username, email, amount, date_added) VALUES (?,?,?,?)");
+		$account->bind_param('ssis', $user->name, $user->email, 0, 'now()');
 		$account->execute();
 		echo $mysqli->error;
     }

@@ -26,7 +26,7 @@ if (isset($_POST["regButton"])) {
    $insert_pro = mysqli_query($conn, $insert_user);
 	
 	if($insert_pro){
-$insert_account = "insert into user (username, amount, date_added) values('$username', 0, now())"; 
+$insert_account = "insert into account (username, email, amount, date_added) values('$username', '$usermail', 0, now())"; 
 	// insert into the database
    $insert_new = mysqli_query($conn, $insert_account);
 		

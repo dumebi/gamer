@@ -12,6 +12,7 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 					$id = $row['id'];
 					$name = $row['name'];
 					$image = $row['image'];
+					$type = $row['type'];
 					$cost = $row['cost'];
 					
 					$gameID = encrypt($id); 
@@ -29,7 +30,7 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 						   <h4>'.$name.' <span class="label pull-right bg-green"> '.$cost.' <i class="fa fa-shopping-cart"></i></span></h4> 
 						   </div>
 						   <div class="col-md-12 col-sm-12 col-xs-12">
-						   <p>Type<i class="fa fa-gamepad fa-lg pull-right"></i></p>
+						   <p>'.$type.'<i class="fa fa-gamepad fa-lg pull-right"></i></p>
 						   </div>
 					  </div>
 					</a>
@@ -54,16 +55,11 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- jvectormap -->
-    <link rel="stylesheet" href="../plugins/jvectormap/jquery-jvectormap-1.2.2.css">
-    <!-- Theme style -->
+   
     <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="../dist/css/skins/_all-skins.css">
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
