@@ -67,12 +67,12 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 											echo" <script>window.location='../index.php';</script>"; 
 										}
 										else{
-											echo" <script>alert('Error! You have already been added');</script>"; 
+											echo" <script>alert('Error! You have already been added to this Game');</script>"; 
 											echo" <script>window.location='../index.php';</script>"; 
 										}
 									}
 							elseif($result < 4){
-								echo 'Yes';
+								//echo 'Yes';
 								// if still needs more ie 1,2,3 etc
 								$sql = "select max(id) from game_play where game_id=".$id."";
 								$game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
@@ -88,7 +88,7 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 											echo" <script>window.location='../index.php';</script>"; 
 										}
 								else{
-											echo" <script>alert('Error! You have already been added');</script>"; 
+											echo" <script>alert('Error! You have already been added to this Game');</script>"; 
 											echo" <script>window.location='../index.php';</script>"; 
 										}
 							}
@@ -130,7 +130,7 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 											echo" <script>window.location='../index.php';</script>"; 
 										}
 										else{
-											echo" <script>alert('Error! You have already been added');</script>"; 
+											echo" <script>alert('Error! You have already been added to this Game');</script>"; 
 											echo" <script>window.location='../index.php';</script>"; 
 										}
 									}
@@ -170,7 +170,7 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 											echo" <script>window.location='../index.php';</script>"; 
 										}
 										else{
-											echo" <script>alert('Error! You have already been added');</script>"; 
+											echo" <script>alert('Error! You have already been added to this Game');</script>"; 
 											echo" <script>window.location='../index.php';</script>"; 
 										}
 							}

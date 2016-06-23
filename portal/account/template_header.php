@@ -50,7 +50,7 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 					
 						$id = encrypt($gameID);
 						if($game_status == 'pending'){
-							$gamepending = '<li><a href="game/?game='.$id.'"><i class="fa fa-circle-o text-red"></i> <span>'.$game_name.'</span> <small class="label pull-right bg-red">Pending</small></a></li>';
+							$gamepending = '<li><a href="game/join.php?e='.$id.'"><i class="fa fa-circle-o text-red"></i> <span>'.$game_name.'</span> <small class="label pull-right bg-red">Pending</small></a></li>';
 						}
 						else{
 							$gamecurrent = '<li><a href="game/?game='.$id.'"><i class="fa fa-circle-o"></i> '.$game_name.'</a></li>';
@@ -117,7 +117,7 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 					if (isset($_SESSION["list_manager"])){
 						echo '
 						<div class="pull-left">
-                      <a href="profile.php" class="btn btn-default btn-flat">Edit Profile</a>
+                      <a href="account/account.php" class="btn btn-default btn-flat">Edit Profile</a>
                     </div>
 						';
 					}
@@ -139,17 +139,18 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
           <!-- Sidebar user panel -->
+		  <a href="#">
           <div class="user-panel">
             <div class="pull-left image">
               <img src="<?php echo $picture ?>" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
               <p><?php echo $user ?></p>
-			  </br></br>
-              <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+			 
+              <i class="fa fa-circle text-success"></i> <small>Online</small>
             </div>
           </div>
-          
+          </a>
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>

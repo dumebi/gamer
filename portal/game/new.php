@@ -6,7 +6,7 @@ include_once('../../storescripts/crypto.php');
 $sql = "select * from games order by name ASC";
 $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 			$gameCount = mysqli_affected_rows($conn);
-				$games = '';
+				$newgames = '';
 				if ($gameCount > 0) {
 					while($row = mysqli_fetch_array($game_query)){ 
 					$id = $row['id'];
@@ -16,7 +16,7 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 					$cost = $row['cost'];
 					
 					$gameID = encrypt($id); 
-					$games.= '
+					$newgames= '
 							<!---------		Game -------->
 				  <div class="col-md-4 col-sm-6 col-xs-12">
 					<div class="box">
@@ -105,9 +105,7 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 					</div>
 			</div>
             <div class="col-md-12">
-				<?php echo $games ?>
-				
-
+				<?php echo $newgames ?>
             </div><!-- /.col -->
           </div><!-- /.row -->
 		  

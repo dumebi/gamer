@@ -17,27 +17,27 @@ $(function () {
   var salesChart = new Chart(salesChartCanvas);
 
   var salesChartData = {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    labels: ["January", "February", "March", "April", "May", "June", "July","August","September","October","November","December"],
     datasets: [
       {
-        label: "Electronics",
+        label: "Games Played",
         fillColor: "rgb(210, 214, 222)",
         strokeColor: "rgb(210, 214, 222)",
         pointColor: "rgb(210, 214, 222)",
         pointStrokeColor: "#c1c7d1",
         pointHighlightFill: "#fff",
         pointHighlightStroke: "rgb(220,220,220)",
-        data: [65, 59, 80, 81, 56, 55, 40]
+        data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40]
       },
       {
-        label: "Digital Goods",
+        label: "Games Won",
         fillColor: "rgba(60,141,188,0.9)",
         strokeColor: "rgba(60,141,188,0.8)",
         pointColor: "#3b8bba",
         pointStrokeColor: "rgba(60,141,188,1)",
         pointHighlightFill: "#fff",
         pointHighlightStroke: "rgba(60,141,188,1)",
-        data: [28, 48, 40, 19, 86, 27, 90]
+        data: [28, 48, 40, 19, 86, 27, 90, 28, 48, 40, 19, 86, 27, 90]
       }
     ]
   };
@@ -96,40 +96,22 @@ $(function () {
   var pieChart = new Chart(pieChartCanvas);
   var PieData = [
     {
-      value: 700,
+      value: 10,
       color: "#f56954",
       highlight: "#f56954",
-      label: "Chrome"
+      label: "Games Won"
     },
     {
-      value: 500,
+      value: 5,
       color: "#00a65a",
       highlight: "#00a65a",
-      label: "IE"
+      label: "Games Lost"
     },
     {
-      value: 400,
+      value: 15,
       color: "#f39c12",
       highlight: "#f39c12",
-      label: "FireFox"
-    },
-    {
-      value: 600,
-      color: "#00c0ef",
-      highlight: "#00c0ef",
-      label: "Safari"
-    },
-    {
-      value: 300,
-      color: "#3c8dbc",
-      highlight: "#3c8dbc",
-      label: "Opera"
-    },
-    {
-      value: 100,
-      color: "#d2d6de",
-      highlight: "#d2d6de",
-      label: "Navigator"
+      label: "Pending Games"
     }
   ];
   var pieOptions = {
@@ -156,7 +138,7 @@ $(function () {
     //String - A legend template
     legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>",
     //String - A tooltip template
-    tooltipTemplate: "<%=value %> <%=label%> users"
+    tooltipTemplate: "<%=value %> <%=label%>"
   };
   //Create pie or douhnut chart
   // You can switch between pie and douhnut using the method below.

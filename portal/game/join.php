@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Gamer | Invite Users</title>
+    <title>Gamer | Challenge Users</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -39,18 +40,43 @@
     <div class="wrapper">
 
       <?php include_once("template_header.php") ?>
+	  <?php 
+if(isset($_GET['e'])){
+	$gameID = $_GET['e'];
+	$id = decrypt($gameID);
+	$users_left = '';
+$sql = "select game_play.game_id, count(*), games.name from games join game_play on game_play.game_id = games.id where game_play.game_id = '".$id."'";
+$game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
+			$gameCount = mysqli_affected_rows($conn);
+				$games = '';
+				$gamepending = '';
+				$gamecurrent = '';
+				if ($gameCount > 0) {
+					while($row = mysqli_fetch_array($game_query)){ 
+					$gameID = $row[0];
+					$users_ = $row[1];
+					$game_name = $row[2];
+					
+					$users_left = 5 - $users_;
+					}
+				}
+				
+}
+else{
+						echo "<script>window.open('../index.php','_self')</script>";
+				}
+?>
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-            &nbsp;
-           
+		  <?php echo $game_name; ?>: <?php echo $users_left; ?> Players Left
           </h1>
           <ol class="breadcrumb">
             <li><a ><i class="fa fa-dashboard"></i> Home</a></li>
             <li><a >Game</a></li>
-            <li class="active">Invite Users</li>
+            <li class="active">Challenge Users</li>
           </ol>
         </section>
 
@@ -59,7 +85,7 @@
           <div class="row">
             <div class="col-md-12">
                   <!-- /.form-group -->
-	<form id="checkout_form" method="post" enctype="multipart/form-data" action="">
+	<form id="checkout_form" method="post" enctype="multipart/form-data" action="challenge.php">
 						   <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
@@ -77,8 +103,30 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Select Users</label>
-                <select class="form-control select2" multiple="multiple" data-placeholder="Select Users (you can select multiple)" style="width: 100%;" /Required>
-                  <option>Alabama</option>
+				<input name="id" type="hidden" value="<?php echo $_GET['e']; ?>" />
+				<input name="challenger" type="hidden" value="<?php echo $user ?>" />
+                <select name="select[]" class="form-control select2" multiple="multiple" data-placeholder="Select Users (you can select multiple)" style="width: 100%;" /Required>
+                  <?php 
+						
+						$sql = "select username, email from account";
+						$game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
+									$gameCount = mysqli_affected_rows($conn);
+										$option = '';
+										if ($gameCount > 0) {
+											while($row = mysqli_fetch_array($game_query)){ 
+											$username = $row[0];
+											$email = $row[1];
+											
+											$option .= '<option value="'.$email.'">'.$username.'</option>';
+											}
+										}
+										else{
+							$oprion = '<li><i class="fa fa-circle-o text-red"></i> <span>No user has been registered yet</span></li>';
+
+										}
+						?>
+				  <?php echo $option; ?>	
+				  <option value="php array for name and email">Alabama</option>
                   <option>Alaska</option>
                   <option>California</option>
                   <option>Delaware</option>
@@ -89,10 +137,11 @@
               </div>
               <!-- /.form-group -->
               <div class="form-group">
-							<label for="description">Message Description (Optional)</label>
-							<textarea name="description" class="form-control" type="text" id="mytextarea" ><p></p></textarea>
+							<label for="message">Message Description (Optional)</label>
+							<textarea name="message" class="form-control" type="text" id="mytextarea" ><p></p></textarea>
 			</div>
-			          <input type="submit" name="addUser" id="addUser" value="Add User"  class="btn btn-sm btn-default btn-flat pull-right"> 
+			<footer>NB: You must have complete 5 players to start a challenge</footer>
+			          <input type="submit" name="challengeUser" id="challengeUser" value="Send Challenge"  class="btn btn-sm btn-default btn-flat pull-right"> 
 
               </div>
               <!-- /.form-group -->

@@ -38,12 +38,15 @@ if(isset($_GET['game'])){
 	$newformat = '';
 	$game_end = '';
 	$games = '';
+	$cost = '';
 	$sql = "select games.name, games.type, games.image, games.location, games.cost, games.description, game_play.game_score, game_play.game_status, game_play.game_end from games join game_play on game_play.game_id = games.id where game_play.username = '".$user."' and game_play.game_id = '".$id."'";
 	$game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 	
 			$gameCount = mysqli_affected_rows($conn);
 				if ($gameCount > 0) {
 					while($row = mysqli_fetch_array($game_query)){ 
+					
+					//Display all game details
 						$name = $row['name'];
 						$type = $row['type'];
 						$image = $row['image'];
@@ -56,7 +59,7 @@ if(isset($_GET['game'])){
 						}
 						
 						$end_time = date("n/j/Y g:i:s A", strtotime($game_end));
-						echo '<script>window.alert("'.$end_time.'");</script>';
+						//echo '<script>window.alert("'.$end_time.'");</script>';
 					
 				}
 }
@@ -65,13 +68,37 @@ if(isset($_GET['game'])){
 if(isset($_GET['game'])){
 	$eid = $_GET['game'];
 	$id = decrypt($eid);
+	$leaderboard ='';
 $sql = "select username, game_score, @curRank := @curRank + 1 As rank from game_play , (Select @curRank := 0 ) r where id = (select id from game_play where username = '".$user."' and game_id = '".$id."') order by game_score ";
 	$game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
-	
+	//LeaderBoard
 			$gameCount = mysqli_affected_rows($conn);
 				if ($gameCount > 0) {
 					while($row = mysqli_fetch_array($game_query)){
-								
+						$username = $row['username'];
+						$game_score = $row['game_score'];
+						$rank = $row['rank'];
+						$price = '';
+						if ($rank == '1'){
+							$price = 0.5 * ($cost * 5);
+						}
+						elseif ($rank == '2'){
+							$price = 0.4 * ($cost * 5);
+						}
+						else{
+							$price = '';
+						}
+						
+						$leaderboard .= '
+						<tr>
+						  <td>'.$username.'</td>
+						  <td>
+							'.$game_score.'
+						  </td>
+						  <td><i class="material-icons">'.$rank.'</i></td>
+						  <td> NGN '.$price.'</td>
+						</tr>
+						';
 					}
 				}
 }
@@ -83,11 +110,12 @@ if(isset($_GET['game'])){
 	$rank = '';
 $ssql = "select username, game_score, @curRank := @curRank + 1 As rank from game_play , (Select @curRank := 0 ) r where id = (select id from game_play where username = '".$user."' and game_id = '".$id."') and username = '".$user."' order by game_score ";
 	$games_query = mysqli_query($conn,$ssql) or die(mysqli_error($conn));
-	
+	// Rank and game score of a particular user
 			$gamesCount = mysqli_affected_rows($conn);
 				if ($gamesCount > 0) {
 					while($rows = mysqli_fetch_array($games_query)){
-						$rank = $rows['rank'];		
+						$rank = $rows['rank'];
+						$user_score = $rows['game_score'];
 					}
 				}
 }
@@ -109,7 +137,7 @@ function showRemaining() {
     if (distance < 0) {
 		
         clearInterval(timer);
-        document.getElementById('countdown').innerHTML = 'EXPIRED!';
+        document.getElementById('countdown').innerHTML = '<h3> Game Challenge Has Expired</h3>';
 
         return;
     }
@@ -137,7 +165,7 @@ timer = setInterval(showRemaining, 1000);
            <div class="col-md-6 col-sm-6 col-xs-12">
 			  <div class="col-md-3 col-sm-3 col-xs-3">
 				   <h3>
-					<?php echo $game_score ?>
+					<?php echo $user_score ?>
 					<small>points</small>
 					
 				  </h3>
@@ -203,10 +231,10 @@ timer = setInterval(showRemaining, 1000);
 			  <div class="col-md-6 col-sm-6 col-xs-12">
 				   <h3><?php echo $name ?></h3>
 				   <div class="col-md-6 col-sm-6 col-xs-6">
-					<p><?php echo $type ?></p>
+					<p><i class="fa fa-gamepad"></i> <?php echo $type ?></p>
 				   </div>
 				   <div class="col-md-6 col-sm-6 col-xs-6">
-				   <p><?php echo $cost ?></p>
+				   <p><i class="fa fa-money"></i> NGN <?php echo $cost ?></p>
 					</div>
 				   <?php echo $description ?>
 				   <a href="../../games/<?php echo $location ?>" class="btn btn-sm btn-default btn-flat pull-left">Play Game</a>
@@ -230,8 +258,9 @@ timer = setInterval(showRemaining, 1000);
                   <th>Name</th>
                   <th>Score</th>
                   <th>Position</th>
-				  <th>Price</th>
+				  <th>Win</th>
                 </tr>
+				<?php echo $leaderboard; ?>
                 <tr>
                   <td>Update software</td>
                   <td>

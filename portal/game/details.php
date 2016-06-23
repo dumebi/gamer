@@ -9,7 +9,7 @@ if(isset($_GET['g'])){
 $sql = "select * from games where id=".$id."";
 $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 			$gameCount = mysqli_affected_rows($conn);
-				$games = '';
+				$game_details = '';
 				if ($gameCount > 0) {
 					while($row = mysqli_fetch_array($game_query)){ 
 					$id = $row['id'];
@@ -19,7 +19,7 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 					$cost = $row['cost'];
 					$description = $row['description'];
 					
-					$games .= '
+					$game_details .= '
 						  <!-- /.box-header -->
             <div class="box-body">
               <div class="col-md-6 col-sm-6 col-xs-12">
@@ -98,7 +98,7 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
             <div class="col-md-12">
             <div class="box">
             
-          <?php echo $games; ?>
+          <?php echo $game_details; ?>
           </div>
             </div><!-- /.col -->
           </div><!-- /.row -->

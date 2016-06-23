@@ -32,24 +32,23 @@
 		if(isset($_POST['editacc'])){
 			$firstname = $_POST['firstname'];
 			$lastname= $_POST['lastname'];
-			$insertCard = mysqli_query($conn, "update account set firstname = '$firstname' and lastname = '$lastname' where username='$user'");
+			$insertCard = mysqli_query($conn, "update account set firstname = '".$firstname."' and lastname = '".$lastname."' where username='".$user."'");
 					if (isset($_SESSION["list_manager"])){
 						$email = $_POST['email'];
-						
 						$product_image1 = $_FILES['profile']['name'];
 						$product_image_temp1 = $_FILES['profile']['tmp_name'];
 						move_uploaded_file($product_image_temp1,"../dist/img/profile/$product_image1");
-						$insertCard = mysqli_query($conn, "update user set email = '$email' and image = '$product_image1' where username='$user'");
-						$insertCard = mysqli_query($conn, "update account set email = '$email' where username='$user'");
+						$insertemail = mysqli_query($conn, "update user set email = '".$email."' and image = '".$product_image1."' where username='".$user."'");
+						$insertemail2 = mysqli_query($conn, "update account set email = '".$email."' where username='".$user."'");
 							if(isset($_POST['pass'])){
 									$pass = $_POST['pass'];
 									$pass2 = $_POST['pass2'];
 									if($pass == $pass2){
 										$password = md5($pass);
-										$insertCard = mysqli_query($conn, "update user set password = '$password' where username='$user'");
-											if($insertCard){
+										$insertpass = mysqli_query($conn, "update user set password = '$password' where username='$user'");
+											if($insertemail){
 												echo" <script>alert('Account has been edited');</script>"; 
-												echo" <script>window.location='index.php';</script>";  
+												echo" <script>window.location='../index.php';</script>";  
 											}else{
 												echo" <script>alert('Error! Account not edited');</script>"; 
 											}
@@ -66,10 +65,10 @@
 		$firstname = '';
 		$lastname = '';
 		$email = '';
-			$sql = mysqli_query($conn, "SELECT * FROM account WHERE username='$user'");
-				$gameCount = mysqli_affected_rows($conn);
-						if ($gameCount > 0) {
-							while($row = mysqli_fetch_array($game_query)){
+			$sql = mysqli_query($conn, "SELECT * FROM account WHERE username='".$user."'");
+				$count = mysqli_affected_rows($conn);
+						if ($count > 0) {
+							while($row = mysqli_fetch_array($sql)){
 								$firstname = $row['firstname'];
 								$lastname = $row['lastname'];
 								$email = $row['email'];
@@ -110,11 +109,11 @@
 						  </div>
 						  <div class="form-group">
 							<label for="firstname">First Name</label>
-							<input name="firstname" class="form-control" type="text" id="firstname" Value="<?php echo $firstname ?>" / required>
+							<input name="firstname" class="form-control" type="text" id="firstname" value="<?php echo $firstname ?>" / required>
 						  </div>
 						  <div class="form-group">
 							<label for="lastname">Last Name</label>
-							<input name="lastname" class="form-control" type="text" id="lastname" Value="<?php echo $lastname ?>" / required>
+							<input name="lastname" class="form-control" type="text" id="lastname" value="<?php echo $lastname ?>" / required>
 						  </div>
 						  <?php 
 						  if (isset($_SESSION["list_manager"])){
@@ -122,7 +121,7 @@
 							
 							<div class="form-group">
 							<label for="email">Email</label>
-							<input name="email" class="form-control" type="text" id="email" Value="'.$email.'" / required>
+							<input name="email" class="form-control" type="text" id="email" value="'.$email.'" / required>
 						  </div>
 								  <div align="center" class="col-md-6">
 										  <div class="form-group has-feedback">
@@ -134,7 +133,7 @@
 								  <div class="col-md-6">
 										  <div  class="form-group has-feedback">
 										  <label for="profile">Change</label>
-											<input type="file" name="profile" Value="'.$image.'" class="form-control">
+											<input type="file" name="profile" value="'.$image.'" class="form-control">
 											<span class="fa fa-camera form-control-feedback"></span>
 										  </div>
 									</div>

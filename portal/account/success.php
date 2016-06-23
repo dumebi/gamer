@@ -47,20 +47,19 @@
         <section class="content">
           <div class="row">
             <div class="col-md-12">
-                 <form method="POST" action="https://voguepay.com/pay/">
-					 <input type="hidden" name="v_merchant_id" value="9696-0040365" />
-					 <input type="hidden" name="memo" value="Gamer - Account top-up" />
-					 <input type="hidden" name="cur" value="NGN" />
-					 <input type="hidden" name="item_1" value="Account Top-UP" />
-					 <input type="hidden" name="item_1" value="Account Top-UP" />
-					 <div class="form-group">
-								<label for="Amount">Username</label>
-								<input name="price_1" class="form-control" type="text" id="price_1" placeholder="Amount (eg 5000 for N5,000)" / required>
-					</div>
-					 <input type="hidden" name="description_1" value="pay into your gamer account" />
-					 <br />
-					 <input type="image" src="https://voguepay.com/images/buttons/make_payment_blue.png" alt="PAY" />
+                  <!-- /.form-group -->
+				  <form id="checkout_form" method="post" enctype="multipart/form-data" action="verify.php">
+                    <input type="hidden" name="token" id="token" value="">
+                    <input type="hidden" name="transaction_id" id="transaction_id" value="">
+						  <div class="form-group">
+							<label for="Amount">Username</label>
+							<input name="amount" class="form-control" type="text" id="amount" placeholder="Amount (eg 5000 for N5,000)" / required>
+						  </div>
+				<div  align="center">
+					<input  type="image" id="btn-checkout" src="http://assets.simplepay.ng/buttons/pay_medium_dark.png" />	  
+                </div>
 				</form>
+                 
                 </div><!-- /.col -->
           </div><!-- /.row -->
         </section><!-- /.content -->

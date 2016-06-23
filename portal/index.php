@@ -35,7 +35,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-            InformaShop Dashboard
+             Dashboard
             <small>Version 1.0</small>
           </h1>
           <ol class="breadcrumb">
@@ -46,111 +46,195 @@
 
         <!-- Main content -->
                 <section class="content">
-          <!-- Info boxes -->
-          <div class="row">
-            <div class="col-md-6 col-sm-6 col-xs-12">
-              <div class="info-box">
-                <span class="info-box-icon bg-aqua"><i class="fa fa-gamepad 3x"></i></span>
-                <div class="info-box-content">
-                  <span class="info-box-text">All Products</span>
-                  <span class="info-box-number"><?php //echo $productCount ?></span>
-                </div><!-- /.info-box-content -->
-              </div><!-- /.info-box -->
-            </div><!-- /.col -->
-            <div class="col-md-6 col-sm-6 col-xs-12">
-              <div class="info-box">
-                <span class="info-box-icon bg-red"><i class="fa fa-user 3x"></i></span>
-                <div class="info-box-content">
-                  <span class="info-box-text">Visited Products</span>
-                  <span class="info-box-number"><?php //echo $sum ?></span>
-                </div><!-- /.info-box-content -->
-              </div><!-- /.info-box -->
-            </div><!-- /.col -->
 
-            <!-- fix for small devices only -->
-            <div class="clearfix visible-sm-block"></div>
+       
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title"><i class="fa fa-chart"></i>Game Stats</h3>
 
-           
-          </div><!-- /.row -->
-
-          <div class="row">
-            <div class="col-md-12">
-              <div class="box">
-                <div class="box-header with-border">
-                  <i class="fa fa-bar-chart"></i> <h3 class="box-title">My Stats</h3>
-                  <div class="box-tools pull-right">
-                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    <div class="btn-group">
-                      <button class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown"><i class="fa fa-wrench"></i></button>
-                      <!-- <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                      </ul> /.dropdown -->
-                    </div>
-                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="chart">
+                    <!-- Sales Chart Canvas -->
+                    <canvas id="salesChart" style="height: 180px;"></canvas>
                   </div>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                  <div class="row">
-                    <div class="col-md-8">
-                      <p class="text-center">
-                        <strong>Sales: 1 Jan, 2016 - 30 Dec, 2016</strong>
-                      </p>
-                      <div class="chart">
-                        <!-- Sales Chart Canvas -->
-                        <canvas id="salesChart" style="height: 180px;"></canvas>
-                      </div><!-- /.chart-responsive -->
-                    </div><!-- /.col -->
-                    <div class="col-md-4">
-                      <p class="text-center">
-                        <strong>Keys</strong>
-                      </p>
-                      
-                      <div class="progress-group">
-                        <span class="progress-text">Orders</span>
-                        <div class="progress sm">
-                          <div class="progress-bar progress-bar-gray" style="width: 100%"></div>
-                        </div>
-                      </div><!-- /.progress-group -->
-                      <div class="progress-group">
-                        <span class="progress-text">Sold</span>
-                        <div class="progress sm">
-                          <div class="progress-bar progress-bar-green" style="width: 100%"></div>
-                        </div>
-                      </div><!-- /.progress-group -->
-                      
-                    </div><!-- /.col -->
-                  </div><!-- /.row -->
-                </div><!-- ./box-body -->
-              </div><!-- /.box -->
-            </div><!-- /.col -->
-          </div><!-- /.row -->
-
-          <!-- Main row -->
-          <div class="row">
-            <div class="col-md-12">
-
-              <!-- PRODUCT LIST -->
-              <div class="box box-primary">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Recently Added Products</h3>
-                  <div class="box-tools pull-right">
-                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  <!-- /.chart-responsive -->
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+            </div>
+            <!-- ./box-body -->
+            <div class="box-footer">
+              <div class="row">
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block border-right">
+                    <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 17%</span>
+                    <h5 class="description-header">$35,210.43</h5>
+                    <span class="description-text">TOTAL REVENUE</span>
                   </div>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                  <ul class="products-list product-list-in-box">
-                   <?php //echo $product_list; ?>
+                  <!-- /.description-block -->
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block border-right">
+                    <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>
+                    <h5 class="description-header">$10,390.90</h5>
+                    <span class="description-text">TOTAL COST</span>
+                  </div>
+                  <!-- /.description-block -->
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block border-right">
+                    <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>
+                    <h5 class="description-header">$24,813.53</h5>
+                    <span class="description-text">TOTAL PROFIT</span>
+                  </div>
+                  <!-- /.description-block -->
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block">
+                    <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>
+                    <h5 class="description-header">1200</h5>
+                    <span class="description-text">GAME COMPLETIONS</span>
+                  </div>
+                  <!-- /.description-block -->
+                </div>
+              </div>
+              <!-- /.row -->
+            </div>
+            <!-- /.box-footer -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+       <div class="row">
+            <div class="col-md-8">
+                       <div class="box box-danger">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Top Gamers</h3>
+
+                  <div class="box-tools pull-right">
+                    
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body no-padding">
+                  <ul class="users-list clearfix">
+                    <li>
+                      <img src="dist/img/profile/user2-160X160.jpg" width="100px" height="100px" alt="User Image">
+                      <a class="users-list-name" href="#">Alexander Pierce</a>
+                      <span class="users-list-date">12 Games</span>
+					  <span class="users-list-date">NGN 50000</span>
+					  
+                    </li>
+                    <li>
+                      <img src="dist/img/profile/user2-160X160.jpg" width="100px" height="100px"  alt="User Image">
+                      <a class="users-list-name" href="#">Alexander Pierce</a>
+                      <span class="users-list-date">12 Games</span>
+					  <span class="users-list-date">NGN 50000</span>
+                    </li>
+					<li>
+                      <img src="dist/img/profile/user2-160X160.jpg" width="100px" height="100px" alt="User Image">
+                      <a class="users-list-name" href="#">Alexander Pierce</a>
+                      <span class="users-list-date">12 Games</span>
+					  <span class="users-list-date">NGN 50000</span>
+                    </li>
+					<li>
+                      <img src="dist/img/profile/user2-160X160.jpg" width="100px" height="100px" alt="User Image">
+                      <a class="users-list-name" href="#">Alexander Pierce</a>
+                      <span class="users-list-date">12 Games</span>
+					  <span class="users-list-date">NGN 50000</span>
+                    </li>
+					<li>
+                      <img src="dist/img/profile/user2-160X160.jpg" width="100px" height="100px" alt="User Image">
+                      <a class="users-list-name" href="#">Alexander Pierce</a>
+                      <span class="users-list-date">12 Games</span>
+					  <span class="users-list-date">NGN 50000</span>
+                    </li>
+					<li>
+                      <img src="dist/img/profile/user2-160X160.jpg" width="100px" height="100px" alt="User Image">
+                      <a class="users-list-name" href="#">Alexander Pierce</a>
+                      <span class="users-list-date">12 Games</span>
+					  <span class="users-list-date">NGN 50000</span>
+                    </li>
+					<li>
+                      <img src="dist/img/profile/user2-160X160.jpg" width="100px" height="100px" alt="User Image">
+                      <a class="users-list-name" href="#">Alexander Pierce</a>
+                      <span class="users-list-date">12 Games</span>
+					  <span class="users-list-date">NGN 50000</span>
+                    </li>
+					<li>
+                      <img src="dist/img/profile/user2-160X160.jpg" width="100px" height="100px" alt="User Image">
+                      <a class="users-list-name" href="#">Alexander Pierce</a>
+                      <span class="users-list-date">12 Games</span>
+					  <span class="users-list-date">NGN 50000</span>
+                    </li>
                   </ul>
-                </div><!-- /.box-body -->
-                <div class="box-footer text-center">
-                  <a href="pages/products/" class="uppercase">View All Products</a>
-                </div><!-- /.box-footer -->
-              </div><!-- /.box -->
+                  <!-- /.users-list -->
+                </div>
+                <!-- /.box-footer -->
+              </div>
+		  </div>
+		  <div class="col-md-4">
+				
+          <div class="box box-default">
+            <div class="box-header with-border">
+              <h3 class="box-title">My Games</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="chart-responsive">
+                    <canvas id="pieChart" height="150"></canvas>
+                  </div>
+                  <!-- ./chart-responsive -->
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer no-padding">
+              <ul class="nav nav-pills nav-stacked">
+                <li><a href="#">Games Won
+                  <span class="pull-right text-red"><i class="fa fa-angle-down"></i> 30%</span></a></li>
+                <li><a href="#">Games Lost <span class="pull-right text-green"><i class="fa fa-angle-up"></i> 40%</span></a>
+                </li>
+                <li><a href="#">Pending Games
+                  <span class="pull-right text-yellow"><i class="fa fa-angle-left"></i> 30%</span></a></li>
+              </ul>
+            </div>
+            <!-- /.footer -->
+          </div>
+          <!-- /.box -->
+		  </div>
             </div><!-- /.col -->
           </div><!-- /.row -->
         </section><!-- /.content -->
