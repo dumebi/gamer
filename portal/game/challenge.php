@@ -22,7 +22,14 @@ $user_email = $challengee;
 			";
 
 			$result = mail($user_email, $subject, $text, $headers);
+			
+			if($result){
+				echo $challengee." yh";
+			}
+			else{
+				echo "no";
+			}
 		}
-		echo "</br>yh";
+		
 }
 ?>

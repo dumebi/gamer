@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Gamer | Refill Account</title>
+    <title>Gamer | Account Top-Up</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -47,18 +47,7 @@
         <section class="content">
           <div class="row">
             <div class="col-md-12">
-                  <!-- /.form-group -->
-				  <form id="checkout_form" method="post" enctype="multipart/form-data" action="verify.php">
-                    <input type="hidden" name="token" id="token" value="">
-                    <input type="hidden" name="transaction_id" id="transaction_id" value="">
-						  <div class="form-group">
-							<label for="Amount">Username</label>
-							<input name="amount" class="form-control" type="text" id="amount" placeholder="Amount (eg 5000 for N5,000)" / required>
-						  </div>
-				<div  align="center">
-					<input  type="image" id="btn-checkout" src="http://assets.simplepay.ng/buttons/pay_medium_dark.png" />	  
-                </div>
-				</form>
+                 
                  
                 </div><!-- /.col -->
           </div><!-- /.row -->

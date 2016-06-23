@@ -15,7 +15,11 @@ $sql = mysqli_query($conn, "SELECT * FROM user WHERE username='$user' LIMIT 1");
 		 while($row = mysqli_fetch_array($sql)){ 
              $email = $row["email"];
 			 $image = $row["image"];
+			 if($image == ''){
+				  $picture = "../dist/img/profile/avatar.png";
+			 }else{
 			$picture = "../dist/img/profile/".$image."";
+			 }
 		 }
     }
 }
@@ -31,7 +35,7 @@ elseif(isset($_SESSION['FBID'])){
 	   $picture = "https://graph.facebook.com/".$_SESSION['FBID']."/picture";
 }
 else{
-	echo "<script>window.open('login.php','_self')</script>";
+	echo "<script>window.open('../login.php','_self')</script>";
 }
 
 ?>     
@@ -50,7 +54,7 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 					
 						$id = encrypt($gameID);
 						if($game_status == 'pending'){
-							$gamepending = '<li><a href="index.php?game='.$id.'"><i class="fa fa-circle-o text-red"></i> <span>'.$game_name.'</span> <small class="label pull-right bg-red">Pending</small></a></li>';
+							$gamepending = '<li><a href="join.php?e='.$id.'"><i class="fa fa-circle-o text-red"></i> <span>'.$game_name.'</span> <small class="label pull-right bg-red">Pending</small></a></li>';
 						}
 						else{
 							$gamecurrent = '<li><a href="index.php?game='.$id.'"><i class="fa fa-circle-o"></i> '.$game_name.'</a></li>';
@@ -117,7 +121,7 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 					if (isset($_SESSION["list_manager"])){
 						echo '
 						<div class="pull-left">
-                      <a href="profile.php" class="btn btn-default btn-flat">Edit Profile</a>
+                      <a href="../account/account.php" class="btn btn-default btn-flat">Edit Profile</a>
                     </div>
 						';
 					}
@@ -145,7 +149,6 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
             </div>
             <div class="pull-left info">
               <p><?php echo $user ?></p>
-			  </br></br>
               <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
           </div>
@@ -154,7 +157,7 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
           <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
             <li class="active treeview">
-              <a href="index.php">
+              <a href="../index.php">
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span> 
               </a>
             </li>
@@ -169,22 +172,22 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
               </ul>
             </li>
 			<li>
-              <a href="game/new.php">
+              <a href="new.php">
                 <i class="fa fa-plus-square"></i> <span>New Game</span> 
               </a>
             </li>
 			<li>
-              <a href="account/refill.php">
+              <a href="../account/refill.php">
                 <i class="fa fa-refresh"></i> <span>Refill Account</span> 
               </a>
             </li>
 			<li>
-              <a href="invite.php">
+              <a href="../invite.php">
                 <i class="fa fa-user-plus"></i> <span>Invite Friends</span> 
               </a>
             </li>
 			<li>
-              <a href="signout.php">
+              <a href="../signout.php">
                 <i class="fa fa-sign-out"></i> <span>Log Out</span> 
               </a>
             </li>

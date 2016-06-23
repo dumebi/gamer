@@ -15,10 +15,10 @@ $client_secret = '4mq9I7LqUrEOX7a0Mm3ClxDM';
 $redirect_uri = 'http://owanbedeals.com/gamer/portal/login.php';
 
 //database
-$db_username = "owanbede"; //Database Username
-$db_password = "Dumebi@2010"; //Database Password
+$db_username = "jude"; //Database Username
+$db_password = "juthelif"; //Database Password
 $host_name = "localhost"; //Mysql Hostname
-$db_name = 'owanbede_gamer'; //Database Name
+$db_name = 'gamer'; //Database Name
 
 //incase of logout request, just unset the session var
 if (isset($_GET['logout'])) {

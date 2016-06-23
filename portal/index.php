@@ -141,50 +141,50 @@
                 <div class="box-body no-padding">
                   <ul class="users-list clearfix">
                     <li>
-                      <img src="dist/img/profile/user2-160X160.jpg" width="100px" height="100px" alt="User Image">
+                      <img src="dist/img/profile/avatar.png" width="100px" height="100px" alt="User Image">
                       <a class="users-list-name" href="#">Alexander Pierce</a>
                       <span class="users-list-date">12 Games</span>
 					  <span class="users-list-date">NGN 50000</span>
 					  
                     </li>
                     <li>
-                      <img src="dist/img/profile/user2-160X160.jpg" width="100px" height="100px"  alt="User Image">
+                      <img src="dist/img/profile/avatar.png" width="100px" height="100px"  alt="User Image">
                       <a class="users-list-name" href="#">Alexander Pierce</a>
                       <span class="users-list-date">12 Games</span>
 					  <span class="users-list-date">NGN 50000</span>
                     </li>
 					<li>
-                      <img src="dist/img/profile/user2-160X160.jpg" width="100px" height="100px" alt="User Image">
+                      <img src="dist/img/profile/avatar.png" width="100px" height="100px" alt="User Image">
                       <a class="users-list-name" href="#">Alexander Pierce</a>
                       <span class="users-list-date">12 Games</span>
 					  <span class="users-list-date">NGN 50000</span>
                     </li>
 					<li>
-                      <img src="dist/img/profile/user2-160X160.jpg" width="100px" height="100px" alt="User Image">
+                      <img src="dist/img/profile/avatar.png" width="100px" height="100px" alt="User Image">
                       <a class="users-list-name" href="#">Alexander Pierce</a>
                       <span class="users-list-date">12 Games</span>
 					  <span class="users-list-date">NGN 50000</span>
                     </li>
 					<li>
-                      <img src="dist/img/profile/user2-160X160.jpg" width="100px" height="100px" alt="User Image">
+                      <img src="dist/img/profile/avatar.png" width="100px" height="100px" alt="User Image">
                       <a class="users-list-name" href="#">Alexander Pierce</a>
                       <span class="users-list-date">12 Games</span>
 					  <span class="users-list-date">NGN 50000</span>
                     </li>
 					<li>
-                      <img src="dist/img/profile/user2-160X160.jpg" width="100px" height="100px" alt="User Image">
+                      <img src="dist/img/profile/avatar.png" width="100px" height="100px" alt="User Image">
                       <a class="users-list-name" href="#">Alexander Pierce</a>
                       <span class="users-list-date">12 Games</span>
 					  <span class="users-list-date">NGN 50000</span>
                     </li>
 					<li>
-                      <img src="dist/img/profile/user2-160X160.jpg" width="100px" height="100px" alt="User Image">
+                      <img src="dist/img/profile/avatar.png" width="100px" height="100px" alt="User Image">
                       <a class="users-list-name" href="#">Alexander Pierce</a>
                       <span class="users-list-date">12 Games</span>
 					  <span class="users-list-date">NGN 50000</span>
                     </li>
 					<li>
-                      <img src="dist/img/profile/user2-160X160.jpg" width="100px" height="100px" alt="User Image">
+                      <img src="dist/img/profile/avatar.png" width="100px" height="100px" alt="User Image">
                       <a class="users-list-name" href="#">Alexander Pierce</a>
                       <span class="users-list-date">12 Games</span>
 					  <span class="users-list-date">NGN 50000</span>

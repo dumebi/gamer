@@ -15,7 +15,11 @@ $sql = mysqli_query($conn, "SELECT * FROM user WHERE username='$user' LIMIT 1");
 		 while($row = mysqli_fetch_array($sql)){ 
              $email = $row["email"];
 			 $image = $row["image"];
+			 if($image == ''){
+				 $picture = "dist/img/profile/avatar.png";
+			 }else{
 			$picture = "dist/img/profile/".$image."";
+			 }
 		 }
     }
 }
