@@ -96,8 +96,8 @@ if (isset($authUrl)){
 		$statement = $mysqli->prepare("INSERT INTO google_users (google_id, google_name, google_email, google_link, google_picture_link) VALUES (?,?,?,?,?)");
 		$statement->bind_param('issss', $user->id,  $user->name, $user->email, $user->link, $user->picture);
 		$statement->execute();
-		$account = $mysqli->prepare("INSERT INTO account (username, email, amount, date_added) VALUES (?,?,?,?)");
-		$account->bind_param('ssis', $user->name, $user->email, 0, 'now()');
+		$account = $mysqli->prepare("INSERT INTO account (username, email, amount, login_type, date_added) VALUES (?,?,?,?,?)");
+		$account->bind_param('ssiss', $user->name, $user->email, 0, 'google', 'now()');
 		$account->execute();
 		echo $mysqli->error;
     }
@@ -118,16 +118,30 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 	$manager = preg_replace('#[^A-Za-z0-9]#i', '', $_POST["username"]); // filter everything but numbers and letters
     $password = preg_replace('#[^A-Za-z0-9]#i', '', $_POST["password"]); // filter everything but numbers and letters
 	$pass = md5($password);
+	$status = '';
     // Connect to the MySQL database  
     $sql = mysqli_query($conn, "SELECT * FROM user WHERE username='$manager' AND password='$pass' LIMIT 1"); // query the person
     // ------- MAKE SURE PERSON EXISTS IN DATABASE ---------
     $existCount = mysqli_affected_rows($conn); // count the row nums
     if ($existCount == 1) { // evaluate the count
+	while($row = mysqli_fetch_array($game_query)){ 
+			$status = $row["status"];
+	}
 		 $_SESSION["list_manager"] = $manager;
-		echo" <script>window.location='index.php';</script>"; 
-         exit();
+		 if($status == "active"){
+					 if(isset($_SESSION["header"]){
+						 echo" <script>window.location='".$_SESSION["header"]."';</script>"; 
+					 }else{
+						echo" <script>window.location='index.php';</script>"; 
+						 exit();
+					 }
+		 }
+		 else{
+			 echo '<script>alert("Your Account has not been activated. Pls check your email to activate or contact support.")</script>';
+		exit();
+		 }
     } else {
-		echo 'That information is incorrect, try again <a href="index.php">Click Here</a>';
+		echo '<script>alert("That information is incorrect, try again")</script>';
 		exit();
 	}
 }

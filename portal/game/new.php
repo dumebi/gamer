@@ -16,7 +16,7 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 					$cost = $row['cost'];
 					
 					$gameID = encrypt($id); 
-					$newgames= '
+					$newgames .= '
 							<!---------		Game -------->
 				  <div class="col-md-4 col-sm-6 col-xs-12">
 					<div class="box">

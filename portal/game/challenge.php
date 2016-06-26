@@ -10,7 +10,7 @@ if(isset($_POST['challengeUser'])){
 $user_email = $challengee;
 	$headers = "MIME-Version: 1.0" . "\r\n";
 	$headers .= "Content-type:text/html;charset=iso-8859-1" . "\r\n";
-	$headers .= "From: Gamer Support <support.gamer.com>"."\r\n";
+	$headers .= "From: Gamer Support <support@gamer.com>"."\r\n";
 			// message subject
 			$subject = 'New Gamer Challenge Invite';
 
@@ -18,7 +18,7 @@ $user_email = $challengee;
 			$text = "
 			You have a new Gamer challenge from ".$challenger."\n
 			".$message."\n\n
-			<a href='localhost/gamer/game/details.php?g=".$id."'>Clock here </a> to Join
+			<a href='gamfari.com/portal/game/details.php?g=".$id."'>Click here </a> to Join
 			";
 
 			$result = mail($user_email, $subject, $text, $headers);

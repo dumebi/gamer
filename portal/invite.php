@@ -21,28 +21,34 @@
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
 	  <!-- Select2 -->
-<script>
-document.getElementById('shareBtn').onclick = function() {
-  FB.ui({
-    method: 'share',
-    display: 'popup',
-    href: 'https://developers.facebook.com/docs/',
-  }, function(response){});
-}
+	  <script>
+    function onClick() {
+        FB.ui({
+            method: 'share',
+            href: 'https://www.gamfari.com/portal/',
+			picture: 'gamfari.com/game_icons/2.jpg',
+			title: 'Gamfari Games',
+			description: 'Gamfari games is an online gaming portal, where users come to play games for the fun of it',
+			caption: "Gamfari",
+        });
+    }
+
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '1016626851763000',
+            xfbml      : true,
+            version    : 'v2.3'
+        });
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
 </script>
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-	<script src='https://cdn.tinymce.com/4/tinymce.min.js'></script>
-  <script>
-  tinymce.init({
-    selector: '#mytextarea',
-  });
- 
-  </script>
   </head>
  
   <body class="hold-transition skin-blue sidebar-mini">
@@ -68,9 +74,6 @@ document.getElementById('shareBtn').onclick = function() {
         <section class="content">
           <div class="row">
             <div class="col-md-12">
-                  <!-- /.form-group -->
-	<form id="checkout_form" method="post" enctype="multipart/form-data" action="">
-						   <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
           <h3 class="box-title">Invite your friends to Gamer</h3>
@@ -83,22 +86,15 @@ document.getElementById('shareBtn').onclick = function() {
         <!-- /.box-header -->
         <div class="box-body">
           <div class="row">
-            <!-- /.col -->
-            <div class="col-md-12">
-              <!-- /.form-group -->
-					  <div class="form-group">
-									<label for="description">Message Description (Optional)</label>
-									<textarea name="description" class="form-control" type="text" id="mytextarea" ><p></p></textarea>
+				<div class="social-auth-buttons">
+					<div class="col-xs-6 col-md-6 no-margin">
+						<button onClick="onClick();" class="btn-block btn-lg btn btn-facebook"><i class="fa fa-facebook"></i> Invite with Facebook</button>
 					</div>
-					
-              </div>
-					<div class="col-md-4" class="social-auth-links text-center">
-					  <a href="facebook" class="btn btn-block btn-social btn-danger btn-flat"><i class="fa fa-google"></i>Invite with Google</a>
-					</div>
-					<div class="col-md-4" class="social-auth-links text-center pull-right">
-					  <div id="shareBtn" class="btn btn-block btn-social btn-primary btn-flat"><i class="fa fa-facebook"></i>Invite with Facebook</div>
-					</div>
-              <!-- /.form-group -->
+					<div class="col-xs-6 col-md-6 no-margin">
+						<button class="btn-block btn-lg btn btn-twitter"><i class="fa fa-twitter"></i> Invite with Twitter</button>
+					</div>			
+				</div>
+              <!-- /.sicial Invite-group -->
             </div>
             <!-- /.col -->
           </div>
@@ -106,8 +102,6 @@ document.getElementById('shareBtn').onclick = function() {
         </div>
         <!-- /.box-body -->
 						  
-					
-                </form>
                  
                 </div><!-- /.col -->
           </div><!-- /.row -->

@@ -54,10 +54,10 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 					
 						$id = encrypt($gameID);
 						if($game_status == 'pending'){
-							$gamepending = '<li><a href="../game/join.php?e='.$id.'"><i class="fa fa-circle-o text-red"></i> <span>'.$game_name.'</span> <small class="label pull-right bg-red">Pending</small></a></li>';
+							$gamepending .= '<li><a href="../game/join.php?e='.$id.'"><i class="fa fa-circle-o text-red"></i> <span>'.$game_name.'</span> <small class="label pull-right bg-red">Pending</small></a></li>';
 						}
 						else{
-							$gamecurrent = '<li><a href="index.php?game='.$id.'"><i class="fa fa-circle-o"></i> '.$game_name.'</a></li>';
+							$gamecurrent .= '<li><a href="index.php?game='.$id.'"><i class="fa fa-circle-o"></i> '.$game_name.'</a></li>';
 						}
 						
 							$games = $gamecurrent ."\n".$gamepending;
@@ -159,6 +159,21 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
             <li class="active treeview">
               <a href="../index.php">
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span> 
+              </a>
+            </li>
+			<li>
+              <?php
+				$amount = '';
+				$sql = mysqli_query($conn, "SELECT amount FROM account WHERE username='$user' LIMIT 1"); 
+					$existCount = mysqli_affected_rows($conn); 
+					if ($existCount == 1) { 
+						 while($row = mysqli_fetch_array($sql)){ 
+							 $amount = $row[0];
+						 }
+					}
+			?>
+              <a href="account.php">
+                <i class="fa fa-user"></i> <span>My Account</span> <small class="label pull-right bg-green">NGN <?php echo $amount ?></small>
               </a>
             </li>
 			<li class="treeview">

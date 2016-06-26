@@ -56,7 +56,7 @@ function checkuser($fuid, $fbfullname, $femail){
 	if (empty($check)) { // if new user . Insert a new record		
 	$query = "INSERT INTO users (Fuid,Ffname,Femail) VALUES ('$fuid','$fbfullname','$femail')";
 	mysqli_query($connection, $query);
-		$querys = "INSERT INTO account (username, email, amount,date_added) VALUES ('$fbfullname', '$femail', 0, now())";
+		$querys = "INSERT INTO account (username, email, amount, login_type, date_added) VALUES ('$fbfullname', '$femail', 0, 'facebook', now())";
 	mysqli_query($connection, $querys);
 	} else {   // If Returned user . update the user record		
 	$query = "UPDATE users SET Ffname='$fbfullname', Femail='$femail' where Fuid='$fuid'";

@@ -16,7 +16,6 @@
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
-	<script src="https://checkout.simplepay.ng/simplepay.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -46,22 +45,25 @@
         <!-- Main content -->
         <section class="content">
           <div class="row">
-            <div class="col-md-12">
+            
                  <form method="POST" action="https://voguepay.com/pay/">
+				 <div class="col-md-12">
 					 <input type="hidden" name="v_merchant_id" value="9696-0040365" />
 					 <input type="hidden" name="memo" value="Gamer - Account top-up" />
 					 <input type="hidden" name="cur" value="NGN" />
 					 <input type="hidden" name="item_1" value="Account Top-UP" />
 					 <input type="hidden" name="item_1" value="Account Top-UP" />
 					 <div class="form-group">
-								<label for="Amount">Username</label>
-								<input name="price_1" class="form-control" type="text" id="price_1" placeholder="Amount (eg 5000 for N5,000)" / required>
-					</div>
+			<input name="price_1" class="form-control input-lg" type="text" id="price_1" placeholder="Amount (eg 5000 for N5,000)" / required>
+						</div>
 					 <input type="hidden" name="description_1" value="pay into your gamer account" />
-					 <br />
-					 <input type="image" src="https://voguepay.com/images/buttons/make_payment_blue.png" alt="PAY" />
+	
+						</div><!-- /.col -->
+						<div class="col-xs-6 col-md-6 no-margin">
+						<button type="submit" class="btn-block btn-lg btn btn-danger" alt="PAY"><i class="fa fa-refresh"></i>&nbsp;Refill Account</button>
+						
+					</div>
 				</form>
-                </div><!-- /.col -->
           </div><!-- /.row -->
         </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
@@ -85,42 +87,6 @@
     <!-- AdminLTE for demo purposes -->
     <script src="../dist/js/demo.js"></script>
     <!-- page script -->
-     <script type="text/javascript">
-        // Use the "token" to validate the payment
-        function processPayment (token) {
-				// implement your code here - we call this after a token is generated
-				// example:
-				var form = $('#checkout_form');
-				form.append(
-					$('<input />', { name: 'token', type: 'hidden', value: token })
-				);
-				form.submit();
-			}
 
-			// Configure SimplePay's Gateway
-			var handler = SimplePay.configure({
-			   token: processPayment, // callback function to be called after token is received
-			   key: 'test_pu_3edd8283663645e3871feb2a9977e650', // place your api key. Demo: test_pu_*. Live: pu_*
-			   image: 'http://' // optional: an url to an image of your choice
-			});
-
-       $('#btn-checkout').on('click', function (e) { // add the event to your "pay" button
-			e.preventDefault();
-
-			handler.open(SimplePay.CHECKOUT, // type of payment
-			{
-			   email: '<?php echo $email ?>', // optional: user's email
-			   phone: '', // optional: user's phone number
-			   description: '<?php echo $user ?>', // a description of your choosing
-			   address: '31 Kade St, Abuja, Nigeria', // user's address
-			   postal_code: '110001', // user's postal code
-			   city: 'Abuja', // user's city
-			   country: 'NG', // user's country
-			   amount: '110000', // value of the purchase, ₦ 1100
-			   currency: 'NGN' // currency of the transaction
-			});
-		});
-
-    </script>
   </body>
 </html>

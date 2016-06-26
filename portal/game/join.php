@@ -20,7 +20,35 @@
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
 	  <!-- Select2 -->
-  
+  <script>
+    function onClick() {
+        FB.ui({
+			
+            method: 'share',
+            href: 'https://www.gamfari.com/portal/game/details.php?g=<?php echo $_GET['e']; ?>',
+			picture: 'gamfari.com/game_icons/2.jpg',
+			title: 'title',
+			description: 'disc',
+			caption: "caption",
+        });
+    }
+
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '1016626851763000',
+            xfbml      : true,
+            version    : 'v2.3'
+        });
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -102,7 +130,7 @@ else{
             <!-- /.col -->
             <div class="col-md-12">
               <div class="form-group">
-                <label>Select Users</label>
+                <label>Select Users (Internal Challenge)</label>
 				<input name="id" type="hidden" value="<?php echo $_GET['e']; ?>" />
 				<input name="challenger" type="hidden" value="<?php echo $user ?>" />
                 <select name="select[]" class="form-control select2" multiple="multiple" data-placeholder="Select Users (you can select multiple)" style="width: 100%;" /Required>
@@ -125,14 +153,7 @@ else{
 
 										}
 						?>
-				  <?php echo $option; ?>	
-				  <option value="php array for name and email">Alabama</option>
-                  <option>Alaska</option>
-                  <option>California</option>
-                  <option>Delaware</option>
-                  <option>Tennessee</option>
-                  <option>Texas</option>
-                  <option>Washington</option>
+				  <?php echo $option; ?>
                 </select>
               </div>
               <!-- /.form-group -->
@@ -140,9 +161,15 @@ else{
 							<label for="message">Message Description (Optional)</label>
 							<textarea name="message" class="form-control" type="text" id="mytextarea" ><p></p></textarea>
 			</div>
-			<footer>NB: You must have complete 5 players to start a challenge</footer>
-			          <input type="submit" name="challengeUser" id="challengeUser" value="Send Challenge"  class="btn btn-sm btn-default btn-flat pull-right"> 
-
+			
+			<footer><strong>NB: You must have complete 5 players to start a challenge</strong></footer>
+			</br>
+			<div class="col-md-3" class="social-auth-links text-center">
+					
+			<div id="shareBtn" onClick="onClick();" class="btn btn-block btn-social btn-primary btn-flat"><i class="fa fa-facebook"></i>Invite Friends With Facebook</div>
+			</div>
+			          <input type="submit" name="challengeUser" id="challengeUser" value="Send Internal Challenge"  class="btn btn-sm btn-default btn-flat pull-right"> 
+	
               </div>
               <!-- /.form-group -->
             </div>

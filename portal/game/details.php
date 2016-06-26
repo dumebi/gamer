@@ -46,6 +46,11 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 					}
 				}
 }
+else{
+	$absolute_url = full_url( $_SERVER );
+	$_SESSION["header"] = $absolute_url;
+	echo "<script>window.open('../login.php','_self')</script>";
+}
 
 
 ?>
@@ -55,7 +60,6 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Gamer | <?php echo $name ?></title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->

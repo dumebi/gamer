@@ -80,13 +80,12 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-            Edit Account
-           
+            My Account
           </h1>
           <ol class="breadcrumb">
             <li><a><i class="fa fa-dashboard"></i> Home</a></li>
             <li><a>Account</a></li>
-            <li class="active">Edit Account</li>
+            <li class="active">My Account</li>
           </ol>
         </section>
 
@@ -94,11 +93,83 @@
         <section class="content">
           <div class="row">
 			<div class="col-xs-12">
+			<div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">Game Details</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+		<div class="row">
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block border-right">
+                    <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 17%</span>
+                    <h5 class="description-header">NGN 35,210</h5>
+                    <span class="description-text">ACCOUNT</span>
+                  </div>
+                  <!-- /.description-block -->
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block border-right">
+                    <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>
+                    <h5 class="description-header">NGN 10,390</h5>
+                    <span class="description-text">WINNINGS</span>
+                  </div>
+                  <!-- /.description-block -->
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block border-right">
+                    <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>
+                    <h5 class="description-header">$24,813.53</h5>
+                    <span class="description-text">TOTAL GAMES</span>
+                  </div>
+                  <!-- /.description-block -->
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block">
+                    <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>
+                    <h5 class="description-header">1200</h5>
+                    <span class="description-text">GAME COMPLETIONS</span>
+                  </div>
+                  <!-- /.description-block -->
+                </div>
+		</div>
+          <div class="row">
+				<div class="social-auth-buttons">
+					<div class="col-xs-6 col-md-6 no-margin">
+						<button onClick="onClick();" class="btn-block btn-lg btn btn-success"><i class="fa fa-money"></i>&nbsp; Checkout Earnings</button>
+					</div>
+					<div class="col-xs-6 col-md-6 no-margin">
+						<a href="refill.php" class="btn-block btn-lg btn btn-danger"><i class="fa fa-refresh"></i> &nbsp; Refill Account</a>
+					</div>			
+				</div>
+              <!-- /.sicial Invite-group -->
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+        </div>
+		
+		
               <div class="box">
+			  
                 <div class="box-header">
-                 
+                 Edit Account
+				 <div class="box-tools pull-right">
+					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+					</button>
+					<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+				  </div>
                 </div><!-- /.box-header -->
-                  <div class="box-body">
+				
+            <div class="box-body">
               <div class="row">
                 <div class="col-md-12">
                   <!-- /.form-group -->

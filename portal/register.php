@@ -1,18 +1,19 @@
 <?php
 include_once('../storescripts/connect_to_mysql.php');
+include_once('../storescripts/crypto.php');
 if (isset($_POST["regButton"])) {
 	$username =  $_POST["username"];
 	$userpass =  $_POST["userpass"];
 	$userpass2 = $_POST["userpass2"];
+	$usermail =  $_POST["usermail"];
 	if ($userpass == $userpass2){
-	$sql = "SELECT * FROM user WHERE username='$username'";
+	$sql = "SELECT * FROM user WHERE username='$username' or email='$usermail'";
 	$insert_pro = mysqli_query($conn,$sql);
     $existCount = mysqli_affected_rows($conn); // count the row nums
     if ($existCount >= 1) { // evaluate the count
-	   echo "<script>alert('Sorry! username is taken')</script>"; 
+	   echo "<script>alert('Sorry! username/email is taken')</script>"; 
     } else {
 		$password = md5($userpass);
-		$usermail =  $_POST["usermail"];
 		$password = md5($userpass);
 		
 				
@@ -21,17 +22,30 @@ if (isset($_POST["regButton"])) {
 		move_uploaded_file($product_image_temp1,"dist/img/profile/$product_image1");
 		
     // Connect to the MySQL database  
-    $insert_user = "insert into user (username, password, email, image, reg_date) values('$username', '$password', '$usermail', '$product_image1', now())"; 
+    $insert_user = "insert into user (username, password, email, image, status, reg_date) values('$username', '$password', '$usermail', '$product_image1', 'pending', now())"; 
 	// insert into the database
    $insert_pro = mysqli_query($conn, $insert_user);
 	
 	if($insert_pro){
-$insert_account = "insert into account (username, email, amount, date_added) values('$username', '$usermail', 0, now())"; 
+$insert_account = "insert into account (username, email, amount, login_type, date_added) values('$username', '$usermail', 0, 'normal', now())"; 
 	// insert into the database
    $insert_new = mysqli_query($conn, $insert_account);
 		
-		
-	echo "<script>alert('Thank you for Registering. Proceed to Login')</script>";
+		$headers = "MIME-Version: 1.0" . "\r\n";
+	$headers .= "Content-type:text/html;charset=iso-8859-1" . "\r\n";
+	$headers .= "From: Gamfari Support <support@gamer.com>"."\r\n";
+			// message subject
+			$subject = 'Activate your Gamfari Account';
+			$crypt = encrypt($username);
+			// Forming Message
+			$text = "Thank you for Registering with us\n\n
+			<a href='gamfari.com/portal/activate.php?g=".$crypt."'>Click here </a> to activate your account\n\n
+			Happy Gaming!!
+			";
+
+			$result = mail($usermail, $subject, $text, $headers);
+			
+	echo "<script>alert('Thank you for Registering. Check your Email to Activate your account')</script>";
 	echo "<script>window.open('login.php','_self')</script>";
 		
 		}
