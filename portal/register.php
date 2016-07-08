@@ -31,7 +31,7 @@ $insert_account = "insert into account (username, email, amount, login_type, dat
 	// insert into the database
    $insert_new = mysqli_query($conn, $insert_account);
 		
-		$headers = "MIME-Version: 1.0" . "\r\n";
+	$headers = "MIME-Version: 1.0" . "\r\n";
 	$headers .= "Content-type:text/html;charset=iso-8859-1" . "\r\n";
 	$headers .= "From: Gamfari Support <support@gamer.com>"."\r\n";
 			// message subject
@@ -39,7 +39,7 @@ $insert_account = "insert into account (username, email, amount, login_type, dat
 			$crypt = encrypt($username);
 			// Forming Message
 			$text = "Thank you for Registering with us\n\n
-			<a href='gamfari.com/portal/activate.php?g=".$crypt."'>Click here </a> to activate your account\n\n
+			<a href='gamfari.com/portal/activate.php?g=".$crypt."'>Click here</a> to activate your account\n\n
 			Happy Gaming!!
 			";
 

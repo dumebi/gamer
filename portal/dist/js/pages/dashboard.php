@@ -1,4 +1,37 @@
+ <?php 
+$sql1 = "select count(*) from games join game_play on game_play.game_id = games.id where game_play.username = '".$user."'";
+$game_all_query = mysqli_query($conn,$sql1) or die(mysqli_error($conn));
+					while($row1 = mysqli_fetch_array($game_all_query)){ 
+					 $gameallCount = $row1[0];
+					}
+$sql2 = "select count(*) from games join game_play on game_play.game_id = games.id where game_play.username = '".$user."' and game_play.result = 'won'";
+$game_won_query = mysqli_query($conn,$sql2) or die(mysqli_error($conn));
+					while($row2 = mysqli_fetch_array($game_won_query)){ 
+					 $gamewonCount = $row2[0];
+					}
+$sql3 = "select count(*) from games join game_play on game_play.game_id = games.id where game_play.username = '".$user."' and game_play.result = 'lost'";
+$game_lost_query = mysqli_query($conn,$sql3) or die(mysqli_error($conn));
+					while($row3 = mysqli_fetch_array($game_lost_query)){ 
+					 $gamelostCount = $row3[0];
+					}
+$sql4 = "select count(*) from games join game_play on game_play.game_id = games.id where game_play.username = '".$user."' and game_play.game_status = 'pending'";
+$game_pending_query = mysqli_query($conn,$sql4) or die(mysqli_error($conn));
+					while($row4 = mysqli_fetch_array($game_pending_query)){ 
+					 $gamependingCount = $row4[0];
+					}
+$sql5 = "select count(*) from games join game_play on game_play.game_id = games.id where game_play.username = '".$user."' and game_play.game_status = 'active'";
+$game_ongoing_query = mysqli_query($conn,$sql5) or die(mysqli_error($conn));
+					while($row5 = mysqli_fetch_array($game_ongoing_query)){ 
+					 $gameongoingCount = $row5[0];
+					}
 
+$wongames = ($gamewonCount / $gameallCount) * 100;
+$lostgames = ($gamelostCount / $gameallCount) * 100;
+$pendinggames = ($gamependingCount / $gameallCount) * 100;
+$ongoinggames = ($gameongoingCount / $gameallCount) * 100;			
+?>
+	<script>
+	
 $(function () {
 
   'use strict';
@@ -28,22 +61,28 @@ $(function () {
   var pieChart = new Chart(pieChartCanvas);
   var PieData = [
     {
-      value: 10,
+      value: <?php echo $gamelostCount; ?>,
       color: "#f56954",
       highlight: "#f56954",
       label: "Games Lost"
     },
     {
-      value: 5,
+      value: <?php echo $gamewonCount; ?>,
       color: "#00a65a",
       highlight: "#00a65a",
       label: "Games Won"
     },
     {
-      value: 15,
+      value: <?php echo $gamependingCount; ?>,
       color: "#f39c12",
       highlight: "#f39c12",
       label: "Pending Games"
+    }
+	{
+      value: <?php echo $gameongoingCount; ?>,
+      color: "#1E90FF",
+      highlight: "#1E90FF",
+      label: "Ongoing Games"
     }
   ];
   var pieOptions = {
@@ -187,3 +226,5 @@ $(function () {
     });
   });
 });
+
+	</script>

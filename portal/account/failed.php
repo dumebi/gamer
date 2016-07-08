@@ -34,11 +34,11 @@
         <!-- Main content -->
         <section class="content">
           <div align="center" class="error-page">
-            <h1 class="headline text-green"> <i class="fa fa-3x fa-check-circle"></i><strong>SUCCESS</strong></h1>
+            <h1 class="headline text-red"><i class="fa fa-3x fa-times-circle"></i><strong>FAILURE</strong></h1>
               <p>
                 Your Gamafri account has been credited with the sum of <strong>NGN 1500</strong>.
               </p>
-			<a href="refill.php" class="btn-block btn-lg btn btn-success"><i class="fa fa-refresh"></i> &nbsp; Return to Account</a>
+			<a href="refill.php" class="btn-block btn-lg btn btn-danger"><i class="fa fa-arrow-left"></i> &nbsp; Return to Account</a>
 					
           </div><!-- /.error-page -->
         </section><!-- /.content -->

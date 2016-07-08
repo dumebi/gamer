@@ -115,21 +115,22 @@ if (isset($authUrl)){
 // Parse the log in form if the user has filled it out and pressed "Log In"
 if (isset($_POST["username"]) && isset($_POST["password"])) {
 
-	$manager = preg_replace('#[^A-Za-z0-9]#i', '', $_POST["username"]); // filter everything but numbers and letters
-    $password = preg_replace('#[^A-Za-z0-9]#i', '', $_POST["password"]); // filter everything but numbers and letters
+	$manager =  $_POST["username"]; // filter everything but numbers and letters
+    $password = $_POST["password"]; // filter everything but numbers and letters
 	$pass = md5($password);
-	$status = '';
+	//$status = '';
     // Connect to the MySQL database  
-    $sql = mysqli_query($conn, "SELECT * FROM user WHERE username='$manager' AND password='$pass' LIMIT 1"); // query the person
+    $sql = mysqli_query($conn, "SELECT * FROM user WHERE username='$manager' or email='$manager' AND password='$pass' LIMIT 1"); // query the person
     // ------- MAKE SURE PERSON EXISTS IN DATABASE ---------
     $existCount = mysqli_affected_rows($conn); // count the row nums
     if ($existCount == 1) { // evaluate the count
-	while($row = mysqli_fetch_array($game_query)){ 
+	while($row = mysqli_fetch_array($sql)){ 
+			$username = $row["username"];
 			$status = $row["status"];
 	}
-		 $_SESSION["list_manager"] = $manager;
 		 if($status == "active"){
-					 if(isset($_SESSION["header"]){
+			 $_SESSION["list_manager"] = $username;
+					 if(isset($_SESSION["header"])){
 						 echo" <script>window.location='".$_SESSION["header"]."';</script>"; 
 					 }else{
 						echo" <script>window.location='index.php';</script>"; 
@@ -138,10 +139,12 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 		 }
 		 else{
 			 echo '<script>alert("Your Account has not been activated. Pls check your email to activate or contact support.")</script>';
+			 echo" <script>window.location='login.php';</script>";
 		exit();
 		 }
     } else {
 		echo '<script>alert("That information is incorrect, try again")</script>';
+		echo" <script>window.location='login.php';</script>";
 		exit();
 	}
 }
@@ -182,7 +185,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
         <p class="login-box-msg">Sign in to start your session</p>
         <form action="login.php" method="post">
           <div class="form-group has-feedback">
-            <input type="text" name="username" class="form-control" placeholder="Username">
+            <input type="text" name="username" class="form-control" placeholder="Username Or Email">
             <span class="fa fa-user form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">

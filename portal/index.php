@@ -29,6 +29,68 @@
     <div class="wrapper">
 
  <?php include_once("template_header.php"); ?>
+ <?php 
+$sql = "select game_play.game_id, game_play.game_status, games.name, game_play.game_score, games.type, game_play.date_created from games join game_play on game_play.game_id = games.id where game_play.username = '".$user."' order by games.name ASC limit 10";
+$game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
+			$gameCount = mysqli_affected_rows($conn);
+				$latestgames = '';
+				$gamepending = '';
+				$gamecurrent = '';
+				$gameexpired = '';
+				if ($gameCount > 0) {
+					while($row = mysqli_fetch_array($game_query)){ 
+					$gameID = $row[0];
+					$game_status = $row[1];
+					$game_name = $row[2];
+					$game_score = $row[3];
+					$type = $row[4];
+					$date_created = $row[5];
+						$id = encrypt($gameID);
+						$game_time = encrypt($date_created);//game end time
+						if($game_status == 'pending'){
+							$gamepending .= '
+							<tr>
+								<td>'.$game_name.'</td>
+								<td>'.$type.'</td>
+								<td><span class="label label-warning">Pending</span></td>
+								<td>
+								  
+								</td>
+						   </tr>
+							';
+						}
+						elseif($game_status == 'active'){
+							$gamecurrent .= '
+							<tr>
+								<td><a href="game/?game='.$id.'&time='.$game_time.'">'.$game_name.'</a></td>
+								<td>'.$type.'</td>
+								<td><span class="label label-info">Ongoing</span></td>
+								<td>
+								  <i class="fa fa-circle-o"></i>&nbsp;'.$game_score.'
+								</td>
+						   </tr>
+							';
+						}
+						elseif($game_status == 'expired'){
+							$gameexpired .= '
+							<tr>
+								<td><a href="game/?game='.$id.'&time='.$game_time.'">'.$game_name.'</a></td>
+								<td>'.$type.'</td>
+								<td><span class="label label-success">Completed</span></td>
+								<td>
+								   <i class="fa fa-circle-o"></i>&nbsp;'.$game_score.'
+								</td>
+						   </tr>
+							';
+						}                                                                                                  
+						
+							$latestgames = $gamepending ."\n".$gamecurrent."\n".$gameexpired;
+					}
+				}
+				else{
+					$latestgames = '<li><a><i class="fa fa-exclamation-triangle"></i>No Registered game yet</a></li>';
+				}
+?>
 
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
@@ -49,7 +111,7 @@
           <!-- TABLE: LATEST ORDERS -->
           <div class="box box-info">
             <div class="box-header with-border">
-              <h3 class="box-title">Latest Orders</h3>
+              <h3 class="box-title">Latest Games</h3>
 
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -63,69 +125,14 @@
                 <table class="table no-margin">
                   <thead>
                   <tr>
-                    <th>Order ID</th>
-                    <th>Item</th>
+                    <th>Name</th>
+                    <th>Type</th>
                     <th>Status</th>
-                    <th>Popularity</th>
+                    <th>Score</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                    <td>Call of Duty IV</td>
-                    <td><span class="label label-success">Shipped</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                    <td>Samsung Smart TV</td>
-                    <td><span class="label label-warning">Pending</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                    <td>iPhone 6 Plus</td>
-                    <td><span class="label label-danger">Delivered</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                    <td>Samsung Smart TV</td>
-                    <td><span class="label label-info">Processing</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#00c0ef" data-height="20">90,80,-90,70,-61,83,63</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                    <td>Samsung Smart TV</td>
-                    <td><span class="label label-warning">Pending</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                    <td>iPhone 6 Plus</td>
-                    <td><span class="label label-danger">Delivered</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                    <td>Call of Duty IV</td>
-                    <td><span class="label label-success">Shipped</span></td>
-                    <td>
-                      <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                    </td>
-                  </tr>
+                  <?php echo $latestgames; ?>
                   </tbody>
                 </table>
               </div>
@@ -138,46 +145,75 @@
             </div>
             <!-- /.box-footer -->
           </div>
-          <!-- /.box -->      
+          <!-- /.box -->  
+			 <?php 
+$sql1 = "select count(*) from games join game_play on game_play.game_id = games.id where game_play.username = '".$user."'";
+$game_all_query = mysqli_query($conn,$sql1) or die(mysqli_error($conn));
+					while($row1 = mysqli_fetch_array($game_all_query)){ 
+					 $gameallCount = $row1[0];
+					}
+$sql2 = "select count(*) from games join game_play on game_play.game_id = games.id where game_play.username = '".$user."' and game_play.result = 'won'";
+$game_won_query = mysqli_query($conn,$sql2) or die(mysqli_error($conn));
+					while($row2 = mysqli_fetch_array($game_won_query)){ 
+					 $gamewonCount = $row2[0];
+					}
+$sql3 = "select count(*) from games join game_play on game_play.game_id = games.id where game_play.username = '".$user."' and game_play.result = 'lost'";
+$game_lost_query = mysqli_query($conn,$sql3) or die(mysqli_error($conn));
+					while($row3 = mysqli_fetch_array($game_lost_query)){ 
+					 $gamelostCount = $row3[0];
+					}
+$sql4 = "select count(*) from games join game_play on game_play.game_id = games.id where game_play.username = '".$user."' and game_play.game_status = 'pending'";
+$game_pending_query = mysqli_query($conn,$sql4) or die(mysqli_error($conn));
+					while($row4 = mysqli_fetch_array($game_pending_query)){ 
+					 $gamependingCount = $row4[0];
+					}
+$sql5 = "select count(*) from games join game_play on game_play.game_id = games.id where game_play.username = '".$user."' and game_play.game_status = 'active'";
+$game_ongoing_query = mysqli_query($conn,$sql5) or die(mysqli_error($conn));
+					while($row5 = mysqli_fetch_array($game_ongoing_query)){ 
+					 $gameongoingCount = $row5[0];
+					}
+$sql6 = "select count(*) from games join game_play on game_play.game_id = games.id where game_play.username = '".$user."' and game_play.game_status = 'expired'";
+$game_expired_query = mysqli_query($conn,$sql6) or die(mysqli_error($conn));
+					while($row6 = mysqli_fetch_array($game_expired_query)){ 
+					 $gameexpiredCount = $row6[0];
+					}
+$sql7 = "select amount from account where username = '".$user."'";
+$user_amount_query = mysqli_query($conn,$sql7) or die(mysqli_error($conn));
+					while($row7 = mysqli_fetch_array($user_amount_query)){ 
+					 $user_amount = $row7[0];
+					}
+$wongames = ($gamewonCount / $gameallCount) * 100;
+$lostgames = ($gamelostCount / $gameallCount) * 100;
+$pendinggames = ($gamependingCount / $gameallCount) * 100;
+$ongoinggames = ($gameongoingCount / $gameallCount) * 100;			
+?>		  
 		  <!-- /.row -->
 		<div class="box">
-              <div class="row">
-                <div class="col-sm-3 col-xs-6">
+             <div class="row">
+                <div class="col-sm-4 col-xs-4">
                   <div class="description-block border-right">
-                    <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 17%</span>
-                    <h5 class="description-header">NGN 35,210</h5>
-                    <span class="description-text">ACCOUNT</span>
+                    <h5 class="description-header">NGN <?php echo $user_amount; ?></h5>
+                    <span class="description-text"><strong>ACCOUNT</strong></span>
                   </div>
                   <!-- /.description-block -->
                 </div>
                 <!-- /.col -->
-                <div class="col-sm-3 col-xs-6">
+                <div class="col-sm-4 col-xs-4">
                   <div class="description-block border-right">
-                    <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>
-                    <h5 class="description-header">NGN 10,390</h5>
-                    <span class="description-text">WINNINGS</span>
+                    <h5 class="description-header"><?php echo $gameallCount; ?></h5>
+                    <span class="description-text"><strong>TOTAL GAMES</strong></span>
                   </div>
                   <!-- /.description-block -->
                 </div>
                 <!-- /.col -->
-                <div class="col-sm-3 col-xs-6">
-                  <div class="description-block border-right">
-                    <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>
-                    <h5 class="description-header">$24,813.53</h5>
-                    <span class="description-text">TOTAL GAMES</span>
-                  </div>
-                  <!-- /.description-block -->
-                </div>
-                <!-- /.col -->
-                <div class="col-sm-3 col-xs-6">
+                <div class="col-sm-4 col-xs-4">
                   <div class="description-block">
-                    <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>
-                    <h5 class="description-header">1200</h5>
-                    <span class="description-text">GAME COMPLETIONS</span>
+                    <h5 class="description-header"><?php echo $gameexpiredCount; ?></h5>
+                    <span class="description-text"><strong>GAME COMPLETIONS</strong></span>
                   </div>
                   <!-- /.description-block -->
                 </div>
-              </div>
+			  </div>
               <!-- /.row -->
             </div>
        <div class="row">
@@ -196,56 +232,81 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body no-padding">
+				<?php 
+				// Get the top gamers and the number of games won
+$game1 = "select distinct username, count('result') from game_play where result = 'won' order by count('result') DESC limit 8";
+$topgamers = mysqli_query($conn,$game1) or die(mysqli_error($conn));
+$gamer_image = '';
+$username = '';
+$wonGames = '';
+$topgamers_list = '';
+$login_type = '';	
+			$gamerCount = mysqli_affected_rows($conn);
+				if ($gamerCount > 0) {
+					while($gamerrow = mysqli_fetch_array($topgamers)){ 
+					$username = $gamerrow[0];
+					$wonGames = $gamerrow[1];
+					
+					
+					// Now for their images
+					//First check their login type - to know what database their image is in
+					
+										$game2 = mysqli_query($conn,"select login_type from account where username='".$username."'");
+										while($gamerrow2 = mysqli_fetch_array($game2)){ 
+											$login_type = $gamerrow2[0];
+							
+													if($login_type == 'google'){
+															$game3 = mysqli_query($conn,"select google_picture_link from google_users where google_name='".$username."'");
+															while($gamerrow2 = mysqli_fetch_array($game3)){ 
+															$gamer_image = $gamerrow2[0];
+														}
+													}
+													if($login_type == 'facebook'){
+															$game4 = mysqli_query($conn,"select Fuid from users where Ffname='".$username."'");
+															while($gamerrow3 = mysqli_fetch_array($game4)){ 
+															$facebookID = $gamerrow2[0];
+															$gamer_image = "https://graph.facebook.com/".$facebookID."/picture";
+														}
+													}
+													if($login_type == 'normal'){
+															$game5 = mysqli_query($conn,"SELECT image FROM user WHERE username='".$username."'");
+															while($gamerrow4 = mysqli_fetch_array($game5)){ 
+															$userimage = $gamerrow4["image"];
+															
+															 if($userimage == ''){
+															$gamer_image = "dist/img/profile/avatar.png";
+															 }else{
+															$gamer_image = "dist/img/profile/".$userimage."";
+															 }
+														}
+													}
+										}
+										
+										if ($username == $user) {
+												$username = 'You';
+											}
+										if ($username != '') {
+									$topgamers_list .= '
+											<li>
+											  <img src="'.$gamer_image.'" width="100px" height="100px" alt="User Image">
+											  <a class="users-list-name">'.$username.'</a>
+											  <span class="users-list-date">'.$wonGames.' Game(s) Won</span>
+											</li>
+									';
+										}
+										else{
+												$topgamers_list .= '<h3>&nbsp;<i class="fa fa-exclamation-triangle"></i> No Top Gamer Yet</h3>';
+											}
+												
+			}
+		}
+				else{
+					$topgamers_list .= '<h3>&nbsp;<i class="fa fa-exclamation-triangle"></i> No Top Gamer Yet</h3>';
+				}
+?>
                   <ul class="users-list clearfix">
-                    <li>
-                      <img src="dist/img/profile/avatar.png" width="100px" height="100px" alt="User Image">
-                      <a class="users-list-name" href="#">Alexander Pierce</a>
-                      <span class="users-list-date">12 Games</span>
-					  <span class="users-list-date">NGN 50000</span>
-					  
-                    </li>
-                    <li>
-                      <img src="dist/img/profile/avatar.png" width="100px" height="100px"  alt="User Image">
-                      <a class="users-list-name" href="#">Alexander Pierce</a>
-                      <span class="users-list-date">12 Games</span>
-					  <span class="users-list-date">NGN 50000</span>
-                    </li>
-					<li>
-                      <img src="dist/img/profile/avatar.png" width="100px" height="100px" alt="User Image">
-                      <a class="users-list-name" href="#">Alexander Pierce</a>
-                      <span class="users-list-date">12 Games</span>
-					  <span class="users-list-date">NGN 50000</span>
-                    </li>
-					<li>
-                      <img src="dist/img/profile/avatar.png" width="100px" height="100px" alt="User Image">
-                      <a class="users-list-name" href="#">Alexander Pierce</a>
-                      <span class="users-list-date">12 Games</span>
-					  <span class="users-list-date">NGN 50000</span>
-                    </li>
-					<li>
-                      <img src="dist/img/profile/avatar.png" width="100px" height="100px" alt="User Image">
-                      <a class="users-list-name" href="#">Alexander Pierce</a>
-                      <span class="users-list-date">12 Games</span>
-					  <span class="users-list-date">NGN 50000</span>
-                    </li>
-					<li>
-                      <img src="dist/img/profile/avatar.png" width="100px" height="100px" alt="User Image">
-                      <a class="users-list-name" href="#">Alexander Pierce</a>
-                      <span class="users-list-date">12 Games</span>
-					  <span class="users-list-date">NGN 50000</span>
-                    </li>
-					<li>
-                      <img src="dist/img/profile/avatar.png" width="100px" height="100px" alt="User Image">
-                      <a class="users-list-name" href="#">Alexander Pierce</a>
-                      <span class="users-list-date">12 Games</span>
-					  <span class="users-list-date">NGN 50000</span>
-                    </li>
-					<li>
-                      <img src="dist/img/profile/avatar.png" width="100px" height="100px" alt="User Image">
-                      <a class="users-list-name" href="#">Alexander Pierce</a>
-                      <span class="users-list-date">12 Games</span>
-					  <span class="users-list-date">NGN 50000</span>
-                    </li>
+                    <?php echo $topgamers_list; ?>
+                    
                   </ul>
                   <!-- /.users-list -->
                 </div>
@@ -270,6 +331,7 @@
                 <div class="col-md-12">
                   <div class="chart-responsive">
                     <canvas id="pieChart" height="150"></canvas>
+					<canvas id="salesChart" style="height: 0px;"></canvas>
                   </div>
                   <!-- ./chart-responsive -->
                 </div>
@@ -279,13 +341,16 @@
             </div>
             <!-- /.box-body -->
             <div class="box-footer no-padding">
+
               <ul class="nav nav-pills nav-stacked">
-                <li><a href="#">Games Won
-                  <span class="pull-right text-red"><i class="fa fa-angle-down"></i> 30%</span></a></li>
-                <li><a href="#">Games Lost <span class="pull-right text-green"><i class="fa fa-angle-up"></i> 40%</span></a>
+                <li><a>Games Won
+                  <span class="pull-right text-red"><i class="fa fa-angle-down"></i> <?php echo $wongames; ?>%</span></a></li>
+                <li><a>Games Lost <span class="pull-right text-green"><i class="fa fa-angle-up"></i> <?php echo $lostgames; ?>%</span></a>
                 </li>
-                <li><a href="#">Pending Games
-                  <span class="pull-right text-yellow"><i class="fa fa-angle-left"></i> 30%</span></a></li>
+                <li><a>Pending Games
+                  <span class="pull-right text-yellow"><i class="fa fa-angle-left"></i> <?php echo $pendinggames; ?>%</span></a></li>
+                <li><a>Ongoing Games
+                  <span class="pull-right text-blue"><i class="fa fa-angle-left"></i> <?php echo $ongoinggames; ?>%</span></a></li>
               </ul>
             </div>
             <!-- /.footer -->
@@ -295,9 +360,10 @@
             </div><!-- /.col -->
           </div><!-- /.row -->
         </section><!-- /.content -->
+		<?php include_once("footer.php") ?>
       </div><!-- /.content-wrapper -->
 
-      <?php include_once("footer.php") ?>
+      
       <div class="control-sidebar-bg"></div>
     </div><!-- ./wrapper -->
 
@@ -318,9 +384,13 @@
     <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- ChartJS 1.0.1 -->
     <script src="plugins/chartjs/Chart.min.js"></script>
+	<script src="dist/js/pages/dashboard2.js"></script>
+	<?php // include_once("dist/js/pages/dashboard.php") ?>
+	
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="dist/js/pages/dashboard2.js"></script>
+    
     <!-- AdminLTE for demo purposes -->
     <script src="dist/js/demo.js"></script>
+
   </body>
 </html>

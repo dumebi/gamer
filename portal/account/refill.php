@@ -51,8 +51,11 @@
 					 <input type="hidden" name="v_merchant_id" value="9696-0040365" />
 					 <input type="hidden" name="memo" value="Gamer - Account top-up" />
 					 <input type="hidden" name="cur" value="NGN" />
+				<input type="hidden" name="success_url" value="http://gamfari.com/portal/account/success.php" />
+				<input type="hidden" name="fail_url" value="http://gamfari.com/portal/account/failed.php" />
+				<input type="hidden" name="notify_url" value="http://gamfari.com/portal/account/notification.php" />
 					 <input type="hidden" name="item_1" value="Account Top-UP" />
-					 <input type="hidden" name="item_1" value="Account Top-UP" />
+					 <input type='hidden' name='developer_code' value='57758c7f10206' />
 					 <div class="form-group">
 			<input name="price_1" class="form-control input-lg" type="text" id="price_1" placeholder="Amount (eg 5000 for N5,000)" / required>
 						</div>
@@ -64,6 +67,7 @@
 						
 					</div>
 				</form>
+				
           </div><!-- /.row -->
         </section><!-- /.content -->
       </div><!-- /.content-wrapper -->

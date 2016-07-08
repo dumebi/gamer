@@ -5,10 +5,9 @@ session_start();
 $user = '';
 $email = '';
 $picture = '';
+$image = '';
 if (isset($_SESSION["list_manager"])){
 $user = $_SESSION['list_manager'];
-$email = '';
-$picture = '';
 $sql = mysqli_query($conn, "SELECT * FROM user WHERE username='$user' LIMIT 1"); 
     $existCount = mysqli_affected_rows($conn); 
     if ($existCount == 1) { 
@@ -115,7 +114,7 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
                       <a href="#" class="btn btn-default btn-flat">Profile</a>
                     </div>-->
                     <div class="pull-right">
-                      <a href="signout.php" class="btn btn-default btn-flat">Sign out</a>
+                      <a href="../signout.php" class="btn btn-default btn-flat">Sign out</a>
                     </div>
 					<?php 
 					if (isset($_SESSION["list_manager"])){

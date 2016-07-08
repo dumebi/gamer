@@ -32,23 +32,35 @@
 		if(isset($_POST['editacc'])){
 			$firstname = $_POST['firstname'];
 			$lastname= $_POST['lastname'];
-			$insertCard = mysqli_query($conn, "update account set firstname = '".$firstname."' and lastname = '".$lastname."' where username='".$user."'");
+			$account_no= $_POST['account_no'];
+			$bank_name= $_POST['bank_name'];
+			$account_type= $_POST['account_type'];
+			$insertfirst = mysqli_query($conn, "update account set firstname = '".$firstname."', lastname = '".$lastname."', AccountNo='".$account_no."', AccountBank='".$bank_name."', AccountType= '".$account_type."' where username='".$user."'");
 					if (isset($_SESSION["list_manager"])){
 						$email = $_POST['email'];
+						
 						$product_image1 = $_FILES['profile']['name'];
+						if($product_image1 == ''){
+							$product_image1 = $image;
+						//	echo" <script>alert('image new: ".$product_image1."');</script>";
+						}
+						else{
+						//echo" <script>alert('image: ".$product_image1."');</script>";
 						$product_image_temp1 = $_FILES['profile']['tmp_name'];
 						move_uploaded_file($product_image_temp1,"../dist/img/profile/$product_image1");
-						$insertemail = mysqli_query($conn, "update user set email = '".$email."' and image = '".$product_image1."' where username='".$user."'");
+						}
+						
+						$insertemail = mysqli_query($conn, "update user set email = '".$email."', image = '".$product_image1."' where username='".$user."'");
 						$insertemail2 = mysqli_query($conn, "update account set email = '".$email."' where username='".$user."'");
 							if(isset($_POST['pass'])){
 									$pass = $_POST['pass'];
 									$pass2 = $_POST['pass2'];
 									if($pass == $pass2){
 										$password = md5($pass);
-										$insertpass = mysqli_query($conn, "update user set password = '$password' where username='$user'");
+										$insertpass = mysqli_query($conn, "update user set password = '".$password."' where username='".$user."'");
 											if($insertemail){
 												echo" <script>alert('Account has been edited');</script>"; 
-												echo" <script>window.location='../index.php';</script>";  
+												echo" <script>window.location='account.php';</script>";  
 											}else{
 												echo" <script>alert('Error! Account not edited');</script>"; 
 											}
@@ -72,6 +84,9 @@
 								$firstname = $row['firstname'];
 								$lastname = $row['lastname'];
 								$email = $row['email'];
+								$AccountNo = $row['AccountNo'];
+								$AccountBank = $row['AccountBank'];
+								$AccountType = $row['AccountType'];
 							}
 						}
 		?>
@@ -103,44 +118,50 @@
           </div>
         </div>
         <!-- /.box-header -->
+					 <?php 
+$sql1 = "select count(*) from games join game_play on game_play.game_id = games.id where game_play.username = '".$user."'";
+$game_all_query = mysqli_query($conn,$sql1) or die(mysqli_error($conn));
+					while($row1 = mysqli_fetch_array($game_all_query)){ 
+					 $gameallCount = $row1[0];
+					}
+
+$sql6 = "select count(*) from games join game_play on game_play.game_id = games.id where game_play.username = '".$user."' and game_play.game_status = 'expired'";
+$game_expired_query = mysqli_query($conn,$sql6) or die(mysqli_error($conn));
+					while($row6 = mysqli_fetch_array($game_expired_query)){ 
+					 $gameexpiredCount = $row6[0];
+					}
+$sql7 = "select amount from account where username = '".$user."'";
+$user_amount_query = mysqli_query($conn,$sql7) or die(mysqli_error($conn));
+					while($row7 = mysqli_fetch_array($user_amount_query)){ 
+					 $user_amount = $row7[0];
+					}			
+?>
         <div class="box-body">
-		<div class="row">
-                <div class="col-sm-3 col-xs-6">
+		 <div class="row">
+                <div class="col-sm-4 col-xs-4">
                   <div class="description-block border-right">
-                    <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 17%</span>
-                    <h5 class="description-header">NGN 35,210</h5>
-                    <span class="description-text">ACCOUNT</span>
+                    <h5 class="description-header">NGN <?php echo $user_amount; ?></h5>
+                    <span class="description-text"><strong>ACCOUNT</strong></span>
                   </div>
                   <!-- /.description-block -->
                 </div>
                 <!-- /.col -->
-                <div class="col-sm-3 col-xs-6">
+                <div class="col-sm-4 col-xs-4">
                   <div class="description-block border-right">
-                    <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>
-                    <h5 class="description-header">NGN 10,390</h5>
-                    <span class="description-text">WINNINGS</span>
+                    <h5 class="description-header"><?php echo $gameallCount; ?></h5>
+                    <span class="description-text"><strong>TOTAL GAMES</strong></span>
                   </div>
                   <!-- /.description-block -->
                 </div>
                 <!-- /.col -->
-                <div class="col-sm-3 col-xs-6">
-                  <div class="description-block border-right">
-                    <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>
-                    <h5 class="description-header">$24,813.53</h5>
-                    <span class="description-text">TOTAL GAMES</span>
-                  </div>
-                  <!-- /.description-block -->
-                </div>
-                <!-- /.col -->
-                <div class="col-sm-3 col-xs-6">
+                <div class="col-sm-4 col-xs-4">
                   <div class="description-block">
-                    <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>
-                    <h5 class="description-header">1200</h5>
-                    <span class="description-text">GAME COMPLETIONS</span>
+                    <h5 class="description-header"><?php echo $gameexpiredCount; ?></h5>
+                    <span class="description-text"><strong>GAME COMPLETIONS</strong></span>
                   </div>
                   <!-- /.description-block -->
                 </div>
-		</div>
+			  </div>
           <div class="row">
 				<div class="social-auth-buttons">
 					<div class="col-xs-6 col-md-6 no-margin">
@@ -179,13 +200,50 @@
 							<input name="username" class="form-control" type="text" id="username" readonly="true" Value="<?php echo $user ?>" / required>
 						  </div>
 						  <div class="form-group">
-							<label for="firstname">First Name</label>
-							<input name="firstname" class="form-control" type="text" id="firstname" value="<?php echo $firstname ?>" / required>
+								<div align="center" class="col-md-12">
+								<label>User Details</label>
+								</div>
+								</br>
+										<div class="col-md-6">
+										  <div class="form-group">
+											<label for="firstname">First Name</label>
+											<input name="firstname" class="form-control" type="text" id="firstname" value="<?php echo $firstname ?>" / required>
+										  </div>
+										</div>
+										<div class="col-md-6">
+										  <div class="form-group">
+											<label for="lastname">Last Name</label>
+											<input name="lastname" class="form-control" type="text" id="lastname" value="<?php echo $lastname ?>" / required>
+										  </div>
+										</div>
 						  </div>
 						  <div class="form-group">
-							<label for="lastname">Last Name</label>
-							<input name="lastname" class="form-control" type="text" id="lastname" value="<?php echo $lastname ?>" / required>
-						  </div>
+								<div align="center" class="col-md-12">
+								<label>Bank Delails</label>
+								</div>
+								</br>
+										<div class="col-md-4">
+											  <div class="form-group">
+												<label for="account_no">Account Number</label>
+												<input name="account_no" class="form-control" type="text" value="<?php echo $AccountNo; ?>" placeholder="Account Number">
+											  </div>
+										</div>
+									  <div class="col-md-4">
+											  <div class="form-group">
+												<label for="bank_name">Bank Name</label>
+												<input name="bank_name" class="form-control" type="text" value="<?php echo $AccountBank; ?>" placeholder="Bank Name">
+											  </div>
+										</div>
+										<div class="col-md-4">
+											  <div class="form-group">
+												<label for="account_type">Account Type</label>
+												<select name="account_type" class="form-control select2" /Required>
+														<option value="current" <?php if ($AccountType == "current") echo "selected='selected'";?> >Current</option>
+														<option value="savings" <?php if ($AccountType == "savings") echo "selected='selected'";?>>Savings</option>
+												</select>
+											  </div>
+										</div>
+						</div> 
 						  <?php 
 						  if (isset($_SESSION["list_manager"])){
 							echo '

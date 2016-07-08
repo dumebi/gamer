@@ -23,8 +23,8 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 					<!-- /.box-header -->
 					<a href="details.php?g='.$gameID.'" style="color: inherit; cursor: pointer; cursor: hand;">
 					<div class="box-body">
-						   <div class="product-img">
-									<img class="img-responsive" src="../../game_icons/'.$image.'" alt="Product Image">
+						   <div height="360px" class="product-img">
+									<img class="img-responsive" height="360px"  src="../../game_icons/'.$image.'" alt="Product Image">
 							</div>
 							<div class="col-md-12 col-sm-12 col-xs-12">
 						   <h4>'.$name.' <span class="label pull-right bg-green"> '.$cost.' <i class="fa fa-shopping-cart"></i></span></h4> 
@@ -85,22 +85,34 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 					<div class="box">
 					<!-- /.box-header -->
 						<div class="box-body">
-						<div class="col-md-3 col-sm-4 col-xs-6">
+						<div class="col-md-6 col-sm-6 col-xs-6">
 						</br>
+<?php
+$sql = "select DISTINCT type from games order by name ASC";
+$game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
+			$gameCount = mysqli_affected_rows($conn);
+				$gameTypes = '';
+				if ($gameCount > 0) {
+					while($row = mysqli_fetch_array($game_query)){ 
+					$type = $row[0];
+					
+					$gameTypes .= '<option onclick="loadType('.$type.')" value="'.$type.'">'.$type.'</option>';
+					}
+				}
+?>
+
 								<div class="form-group">
+								<label>Categories:</label>
 								  <select class="form-control">
-									<option>option 1</option>
-									<option>option 2</option>
-									<option>option 3</option>
-									<option>option 4</option>
-									<option>option 5</option>
+									<?= $gameTypes; ?>
 								  </select>
 								</div>
 								
 						</div>
-						<div class="col-md-3 col-sm-4 col-xs-6">
-						<h3 class="text-muted">(<?php echo $gameCount; ?> Results)</h3>
-						</div>
+							<div class="col-md-3 col-sm-4 col-xs-6">
+							</br></br>
+							<h4 class="text-muted">(<?php echo $gameCount; ?> Results)</h4>
+							</div>
 						</div>
 					</div>
 			</div>

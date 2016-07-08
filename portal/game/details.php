@@ -1,59 +1,4 @@
-<?php
-//connecting to database
-include_once('../../storescripts/connect_to_mysql.php');
-include_once('../../storescripts/crypto.php');
-if(isset($_GET['g'])){
-	$gameID = $_GET['g'];
-	$id = decrypt($gameID);
-	$game ='';
-$sql = "select * from games where id=".$id."";
-$game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
-			$gameCount = mysqli_affected_rows($conn);
-				$game_details = '';
-				if ($gameCount > 0) {
-					while($row = mysqli_fetch_array($game_query)){ 
-					$id = $row['id'];
-					$name = $row['name'];
-					$image = $row['image'];
-					$type = $row['type'];
-					$cost = $row['cost'];
-					$description = $row['description'];
-					
-					$game_details .= '
-						  <!-- /.box-header -->
-            <div class="box-body">
-              <div class="col-md-6 col-sm-6 col-xs-12">
-				   <div class="product-img">
-							<img class="img-responsive"  src="../../game_icons/'.$image.'" alt="Product Image">
-						  </div>
-			  </div>
-			  <div class="col-md-6 col-sm-6 col-xs-12">
-				   <h3>'.$name.'</h3>
-				   <div class="col-md-6 col-sm-6 col-xs-6">
-					<p>'.$type.'</p>
-				   </div>
-				   <div class="col-md-6 col-sm-6 col-xs-6">
-				   <p>'.$cost.'</p>
-					</div>
-				   <p>
-				   '.$description.'
-				   </p>
-				   <a class="btn btn-sm btn-default btn-flat pull-left" href="add.php?new='.$gameID.'">Add Game</a>
-			  </div>
-            </div>
-            <!-- /.box-body -->
-					';
-					}
-				}
-}
-else{
-	$absolute_url = full_url( $_SERVER );
-	$_SESSION["header"] = $absolute_url;
-	echo "<script>window.open('../login.php','_self')</script>";
-}
 
-
-?>
 
 <!DOCTYPE html>
 <html>
@@ -88,6 +33,89 @@ else{
     <div class="wrapper">
 
  <?php include_once("template_header.php"); ?>
+ <?php
+if(isset($_GET['g'])){
+	$gameID = $_GET['g'];
+	$id = decrypt($gameID);
+	$game ='';
+$sql = "select * from games where id=".$id."";
+$game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
+			$gameCount = mysqli_affected_rows($conn);
+				$game_details = '';
+				if ($gameCount > 0) {
+					while($row = mysqli_fetch_array($game_query)){ 
+					$id = $row['id'];
+					$name = $row['name'];
+					$image = $row['image'];
+					$type = $row['type'];
+					$cost = $row['cost'];
+					$description = $row['description'];
+					
+					$added = mysqli_query($conn,"select id from game_play where username='".$user."' and game_id = ".$id." and game_status != 'expired'");
+					$addedCount = mysqli_affected_rows($conn);
+							if ($addedCount < 1) {
+							$game_details .= '
+								  <!-- /.box-header -->
+					<div class="box-body">
+					  <div class="col-md-6 col-sm-6 col-xs-12">
+						   <div class="product-img">
+									<img class="img-responsive"  src="../../game_icons/'.$image.'" alt="Product Image">
+								  </div>
+					  </div>
+					  <div class="col-md-6 col-sm-6 col-xs-12">
+						   <h3>'.$name.'</h3>
+						   <div class="col-md-6 col-sm-6 col-xs-6">
+							<p>'.$type.'</p>
+						   </div>
+						   <div class="col-md-6 col-sm-6 col-xs-6">
+						   <p>'.$cost.'</p>
+							</div>
+						   <p>
+						   '.$description.'
+						   </p>
+						   <a class="btn btn-sm btn-default btn-flat pull-left" href="add.php?new='.$gameID.'">Add Game</a>
+					  </div>
+					</div>
+					<!-- /.box-body -->
+							';
+							}
+							else{
+								$game_details .= '
+								  <!-- /.box-header -->
+					<div class="box-body">
+					  <div class="col-md-6 col-sm-6 col-xs-12">
+						   <div class="product-img">
+									<img class="img-responsive"  src="../../game_icons/'.$image.'" alt="Product Image">
+								  </div>
+					  </div>
+					  <div class="col-md-6 col-sm-6 col-xs-12">
+						   <h3>'.$name.'</h3>
+						   <div class="col-md-6 col-sm-6 col-xs-6">
+							<p>'.$type.'</p>
+						   </div>
+						   <div class="col-md-6 col-sm-6 col-xs-6">
+						   <p>'.$cost.'</p>
+							</div>
+						   <p>
+						   '.$description.'
+						   </p>
+						   <a class="btn btn-sm btn-default btn-flat pull-left disabled" onclick=return false; >Add Game</a>
+					  </div>
+					</div>
+					<!-- /.box-body -->
+							';
+							}
+					}
+				}
+}
+else{
+	$absolute_url = full_url( $_SERVER );
+	$_SESSION["header"] = $absolute_url;
+	echo "<script>window.open('../login.php','_self')</script>";
+}
+
+
+?>
 
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">

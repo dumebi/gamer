@@ -5,10 +5,9 @@ session_start();
 $user = '';
 $email = '';
 $picture = '';
+$image = '';
 if (isset($_SESSION["list_manager"])){
 $user = $_SESSION['list_manager'];
-$email = '';
-$picture = '';
 $sql = mysqli_query($conn, "SELECT * FROM user WHERE username='$user' LIMIT 1"); 
     $existCount = mysqli_affected_rows($conn); 
     if ($existCount == 1) { 
