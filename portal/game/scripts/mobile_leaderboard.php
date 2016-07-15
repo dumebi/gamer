@@ -1,28 +1,16 @@
 <?php
 include_once('../../../storescripts/connect_to_mysql.php');
-include_once('../../../storescripts/crypto.php');  
 
-session_start();
-$user = '';;
-$image = '';
-if (isset($_SESSION["list_manager"])){
-$user = $_SESSION['list_manager'];
-}
-elseif(isset($_SESSION['google_name'])){
-	$user = $_SESSION['google_name'];
-}
-elseif(isset($_SESSION['FBID'])){      
-       $user = $_SESSION['FULLNAME'];
-}
-else{
-	echo "<script>window.open('../login.php','_self')</script>";
-}
-
- if(isset($_SESSION["game_id"]) && isset($_SESSION["date_created"])){
-	 $eid = $_SESSION["game_id"];
-	$time = $_SESSION["date_created"];
-	$id = decrypt($eid);
-	$date_created = decrypt($time);
+ if(isset($_GET["game_id"]) && isset($_GET["username"]) && isset($_GET["hash"])){
+	 $id = $_GET["game_id"];
+	 $user = $_GET["username"];
+	 $hash = $_GET["hash"];
+	 
+	 $secretKey="HerTa123@suMkey!?";
+     $expected_hash = md5($id . $user . $secretKey);
+	 
+	 
+	 if($expected_hash == $hash) { 
 	$leaderboard ='';
 $sql2 = "select username, game_score, @curRank := @curRank + 1 As rank from game_play , (Select @curRank := 0 ) r where id = (select id from game_play where username = '".$user."' and game_id = ".$id." and game_play.game_status = 'active') and game_id =".$id." order by game_score DESC";
 	
@@ -43,9 +31,14 @@ $sql2 = "select username, game_score, @curRank := @curRank + 1 As rank from game
 				
 				$leader = substr_replace($leaderboard, "", -1);
 				echo $leader;
+	 }
+	 else{
+			echo" Hash value is wrong!!"; 
+			//echo" <script>window.location='../index.php';</script>"; 
+			}
 }
 else{
-				echo" <script>alert('Error: 0251. ');</script>"; 
-				echo" <script>window.location='../index.php';</script>"; 
+				echo" Error: 0251. "; 
+				//echo" <script>window.location='../index.php';</script>"; 
 			}
 ?>
