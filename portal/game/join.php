@@ -1,5 +1,27 @@
 
 <!DOCTYPE html>
+<?php
+include_once('../../storescripts/connect_to_mysql.php');
+include_once('../../storescripts/crypto.php'); 
+if(isset($_GET['e'])){
+	$gameID = $_GET['e'];
+	$id = decrypt($gameID);
+$sql = "select * from games where id = '".$id."'";
+$game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
+			$gameCount = mysqli_affected_rows($conn);
+				if ($gameCount > 0) {
+					while($row = mysqli_fetch_array($game_query)){ 
+					$name = $row["name"];
+					$image = $row["image"];
+					$type = $row["type"];
+					$descript = $row["description"];
+					$description = strip_tags($descript); 
+					
+					}
+				}
+				
+}
+?>
 <html>
   <head>
     <meta charset="utf-8">
@@ -26,10 +48,10 @@
 			
             method: 'share',
             href: 'https://www.gamfari.com/portal/game/details.php?g=<?php echo $_GET['e']; ?>',
-			picture: 'gamfari.com/game_icons/2.jpg',
-			title: 'title',
-			description: 'disc',
-			caption: "caption",
+			picture: 'gamfari.com/game_icons/<?php echo $image ?>',
+			title: '<?php echo $name ?>',
+			description: '<?php echo $description ?>',
+			caption: "<?php echo $type ?>",
         });
     }
 

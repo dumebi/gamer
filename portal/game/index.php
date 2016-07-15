@@ -258,7 +258,7 @@ timer = setInterval(showRemaining, 1000);
 					</div>
 				   <?php echo $description ?>
 				   
-				   <a id="play_game_btn" href="../../games/<?php echo $location ?>" <?php if($game_status == 'expired'){echo 'class="btn btn-sm btn-default btn-flat pull-left disabled"';}else{echo 'class="btn btn-sm btn-default btn-flat pull-left"';} ?> >Play Game</a>
+				   <a id="play_game_btn" target="_blank" href="../../games/<?php echo $location ?>" <?php if($game_status == 'expired'){echo 'class="btn btn-sm btn-default btn-flat pull-left disabled"';}else{echo 'class="btn btn-sm btn-default btn-flat pull-left"';} ?> >Play Game</a>
 			  </div>
             </div>
             <!-- /.box-body -->

@@ -326,19 +326,7 @@ $login_type = '';
               </div>
             </div>
             <!-- /.box-header -->
-            <div class="box-body">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="chart-responsive">
-                    <canvas id="pieChart" height="150"></canvas>
-					<canvas id="salesChart" style="height: 0px;"></canvas>
-                  </div>
-                  <!-- ./chart-responsive -->
-                </div>
-                <!-- /.col -->
-              </div>
-              <!-- /.row -->
-            </div>
+            
             <!-- /.box-body -->
             <div class="box-footer no-padding">
 

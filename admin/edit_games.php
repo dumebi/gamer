@@ -13,54 +13,35 @@ if (!isset($_SESSION["admin_manager"])) {
 }
 ?>
 
-<?php
-// Delete Item Question to Admin, and Delete Product if they choose
-if (isset($_GET['deleteid'])) {
-	echo 'Do you really want to delete game with ID of ' . $_GET['deleteid'] . '? <a href="all_games.php?yesdelete=' . $_GET['deleteid'] . '">Yes</a> | <a href="all_games.php">No</a>';
-	exit();
-}
-if (isset($_GET['yesdelete'])) {
-		// remove item from system and delete its picture
-		// delete from database
-		$id_to_delete = $_GET['yesdelete'];
-		$sql = mysqli_query($conn,"DELETE FROM games WHERE id='$id_to_delete' LIMIT 1") or die (mysqli_error($conn));
-		// unlink the image from server
-		// Remove The Pic -------------------------------------------
-		$shop_games = mysqli_query($conn,"select image from games where id = '$id_to_delete' ") or die(mysqli_error($conn));
-		$gameCount = mysqli_affected_rows($conn);
-		if ($gameCount > 0) {
-		while($row = mysqli_fetch_array($shop_games)){ 
-				$image = $row[0];
-				$pictodelete = ("../game_icons/".$image."");
-				if (file_exists($pictodelete)) {
-							unlink($pictodelete);
-				}
-		}
-		echo" <script>window.location='all_games.php';</script>";
-	}
-}
-?>
-
 <?php 
-if(isset($_POST['insertButton'])){
+if(isset($_POST['updateButton'])){
+	$id = $_POST['id'];
+	$location = '';
 	$name = $_POST['name'];
 	$type = $_POST['type'];
 	$image = $_FILES['image']['name'];
 	$cost = $_POST['cost'];
 	$duration = $_POST['duration'];
 	$description = $_POST['description'];
-	
+	$imageicon = $_POST['imageicon'];
 	$filename = $_FILES["gameFile"]["name"];
-	$location = explode(".", $filename);
+	$uploadgamefile = $_POST['uploadgamefile'];
 	
-	
-	$insertGame = mysqli_query($conn, 'Insert into games (name, type, image, location, cost, duration, description, date_created) values ("'.$name.'", "'.$type.'", "'.$image.'", "'.$location[0].'", "'.$cost.'", "'.$duration.'", "'.$description.'", now())')or die(mysqli_error($conn));
-	if($insertGame){
+	if($image == ''){
+		$image = $imageicon;
+	}
+	else{
 		//$image = $_FILES['image']['name'];
 		$image_temp1 = $_FILES['image']['tmp_name'];
 		move_uploaded_file($image_temp1,"../game_icons/$image");
-		
-		
+	}
+	if($filename == ''){
+		$location = $uploadgamefile;
+	}
+	else{
+	$loc = explode(".", $filename);
+	$location = $loc[0];
+			
 		// ----------------------- ZIP -----------------------------------
 				if($_FILES["gameFile"]["name"]) {
 				$filename = $_FILES["gameFile"]["name"];
@@ -98,13 +79,18 @@ if(isset($_POST['insertButton'])){
 			}
 
 // --------------------------------------- ZIP END ----------------------------
+	}
+	
+	$updateGame = mysqli_query($conn, 'Update games set name = "'.$name.'", type = "'.$type.'", image = "'.$image.'", location = "'.$location.'", cost = "'.$cost.'", duration = "'.$duration.'", description = "'.$description.'", date_created = now() where id='.$id.'')or die(mysqli_error($conn));
+	if($updateGame){
+
 		
-		echo" <script>alert('Product has been added');</script>"; 
+		echo" <script>alert('Product has been Edited');</script>"; 
 		echo" <script>window.location='all_games.php';</script>"; 
 	}
 	
 	else{
-		echo" <script>alert('Error! Product not added');</script>"; 
+		echo" <script>alert('Error! Product not Edited');</script>"; 
 	}
 }
 
@@ -112,43 +98,23 @@ if(isset($_POST['insertButton'])){
 
 <?php 
 // This block grabs the whole list for viewing
-$user = $_SESSION['admin_manager'];
-$game_list = "";
-$shop_games = mysqli_query($conn,"select * from games") or die(mysqli_error($conn));
-$productCount = mysqli_affected_rows($conn);
-if ($productCount > 0) {
-	while($row = mysqli_fetch_array($shop_games)){ 
-             $id = $row["id"];
-			 $name = $row["name"];
-			 $image = $row["image"];
-			 $type = $row["type"];
-			 $cost = $row["cost"];
-			 $date_added = strftime("%b %d, %Y", strtotime($row["date_created"]));
-			 
-			 //$gameID = encrypt($id);
-			 $game_list .= " 
- 
-				<tr>
-					<td>$id</td>
-					<td>
-							<div class='product-img'>
-							<img height='30px' width='30px' src='../game_icons/".$image."' alt='Product Image'>
-						  </div>
-					</td> 
-					<td>$name</td>
-					<td>$type</td> 
-					<td>$cost</td> 
-					<td>$date_added</td> 
-					<td><a class='tiny button' href='edit_games.php?pid=$id'>edit</a></td>
-					<td><a class='tiny button' href='all_games.php?deleteid=$id'>delete</a></td>
-					
-				  </tr>
-
-			 ";
-				
+if(isset($_GET["pid"])){
+		$game = $_GET["pid"];
+		$shop_games = mysqli_query($conn,"select * from games where id=".$game."") or die(mysqli_error($conn));
+		$productCount = mysqli_affected_rows($conn);
+		if ($productCount > 0) {
+			while($row = mysqli_fetch_array($shop_games)){ 
+					 $id = $row["id"];
+					 $name = $row["name"];
+					 $image = $row["image"];
+					 $type = $row["type"];
+					 $location = $row["location"];
+					 $duration = $row["duration"];
+					 $description = $row["description"];
+					 $cost = $row["cost"];
+			}
+		} 
 	}
-} 
-
 else {
 	//$game_list = "You have no games listed in your store yet";
 }
@@ -160,15 +126,13 @@ else {
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Gamer | All Games</title>
+    <title>Gamer | Edit Game</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- DataTables -->
     <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css">
     <!-- Theme style -->
@@ -199,91 +163,64 @@ else {
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-            All Games
+            Edit Game - <?= $name ?>
            
           </h1>
           <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
             <li><a href="#">Games</a></li>
-            <li class="active">All Games</li>
+            <li class="active">Edit Games</li>
           </ol>
         </section>
 
         <!-- Main content -->
         <section class="content">
           <div class="row">
-            <div class="col-xs-12">
-              <div class="box">
-                <div class="box-header">
-                 
-                </div><!-- /.box-header -->
-                <div class="box-body">
-				<div class="table-responsive">
-				
-                  <table id="example2" class="table table-bordered table-hover">
-                    <thead>
-                      <tr>
-						<th>ID</th>
-						<th></th>
-						<th>Game Name</th>
-						<th>Game Type</th>
-						<th>Cost</th>		
-						<th>Date Added</th>
-						<th></th>
-						<th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                     <?php echo $game_list; ?>
-                    </tbody>
-                  </table>
-                </div><!-- /.box-body -->
-				 </div>
-              </div><!-- /.box -->
-
-            </div><!-- /.col -->
 			
 			 <div class="col-xs-12">
               <div class="box">
                 <div class="box-header">
                  <h1>
-            New Games
+            Edit Game
           </h1>
                 </div><!-- /.box-header -->
                   <div class="box-body">
               <div class="row">
                 <div class="col-md-12">
                   <!-- /.form-group -->
-				  <form id="form1" name="form1" method="post" enctype="multipart/form-data" action="all_games.php">
+				  <form id="form1" name="form1" method="post" enctype="multipart/form-data" action="edit_games.php">
                   <div class="form-group">
                     <label for="name">Game Name</label>
-                    <input name="name" class="form-control" type="text" id="name" placeholder="Game Name" / required>
+					<input name="id" type="hidden" value="<?= $id ?>" / required>
+                    <input name="name" class="form-control" type="text" id="name" value="<?= $name ?>" / required>
                   </div>
 				  <div class="form-group">
                     <label for="type">Game Type</label>
-                    <input name="type" class="form-control" type="text" id="type" placeholder="Game Type" / required>
+                    <input name="type" class="form-control" type="text" id="type" value="<?= $type ?>" / required>
                   </div>
 				  <div class="form-group">
 					<label for="image">Upload Icon </label>
-			        <input type="file" name="image" accept="image/*" required/>
+					<input type="hidden" name="imageicon" value="<?= $image ?>" required/>
+			        <input type="file" name="image" accept="image/*" value="<?= $image ?> />
 				  </div>
 				  <div class="form-group">
 					<label for="gameFile">Upload Game </label>
-			        <input type="file" name="gameFile" accept="application/zip" required/>
+					<input type="hidden" name="uploadgamefile" value="<?= $location ?>" required/>
+			        <input type="file" name="gameFile" value="<?= $location ?>" accept="application/zip"/>
 				  </div>
 				  <div class="form-group">
                     <label for="duration">Game Duration (Hours)</label>
-                    <input name="duration" class="form-control" type="text" id="duration" placeholder="Game Duration" / required>
+                    <input name="duration" class="form-control" type="text" id="duration" value="<?= $duration ?>" / required>
                   </div>
 				  <div class="form-group">
                     <label for="cost">Game Cost</label>
-                    <input name="cost" class="form-control" type="text" id="cost" placeholder="Game Cost" / required>
+                    <input name="cost" class="form-control" type="text" id="cost" value="<?= $cost ?>" / required>
                   </div>
 				  <div class="form-group">
                     <label for="description">Game Description</label>
-                    <textarea name="description" class="form-control" type="text" id="mytextarea" / required><p></p></textarea>
+                    <textarea name="description" class="form-control" type="text" id="mytextarea" / required><?= $description ?></textarea>
                   </div>
-					<input type="submit" name="insertButton" id="insertButton" value="Insert game"  class="btn btn-sm btn-default btn-flat pull-right"> 
+					<input type="submit" name="updateButton" id="updateButton" value="Update Game"  class="btn btn-sm btn-default btn-flat pull-right"> 
                 </form>
                  
                 </div><!-- /.col -->

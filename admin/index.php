@@ -31,6 +31,8 @@ if ($gameCount > 0) {
 			 
 			 $game_list .= "
 				<tr>
+				
+					<td>$id</td>
 					<td>
 							<div class='product-img'>
 							<img height='30px' width='30px' src='../game_icons/".$image."' alt='Product Image'>
@@ -40,7 +42,7 @@ if ($gameCount > 0) {
 					<td>$type</td> 
 					<td>$cost</td> 
 					<td>$date_added</td> 
-					<td><a class='tiny button' href='product_edit.php?pid=$id'>edit</a></td>
+					<td><a class='tiny button' href='edit_games.php?pid=$id'>edit</a></td>
 					<td><a class='tiny button' href='all_games.php?deleteid=$id'>delete</a></td>
 					
 				  </tr>
@@ -149,6 +151,7 @@ if ($gameCount > 0) {
                   <table id="example2" class="table table-bordered table-hover">
                     <thead>
                       <tr>
+						<th>ID</th>
 						<th></th>
 						<th>Game Name</th>
 						<th>Game Type</th>

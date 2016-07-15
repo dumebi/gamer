@@ -39,7 +39,7 @@ else{
 
 ?>     
 <?php 
-$sql = "select game_play.game_id, game_play.game_status, games.name from games join game_play on game_play.game_id = games.id where game_play.username = '".$user."' and game_play.game_status != 'expired' order by games.name ASC";
+$sql = "select game_play.game_id, game_play.game_status, games.name, game_play.date_created from games join game_play on game_play.game_id = games.id where game_play.username = '".$user."' and game_play.game_status != 'expired' order by games.name ASC";
 $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 			$gameCount = mysqli_affected_rows($conn);
 				$games = '';
@@ -50,13 +50,15 @@ $game_query = mysqli_query($conn,$sql) or die(mysqli_error($conn));
 					$gameID = $row[0];
 					$game_status = $row[1];
 					$game_name = $row[2];
+					$date_created = $row[3];
 					
 						$id = encrypt($gameID);
+						$end = encrypt($date_created);
 						if($game_status == 'pending'){
 							$gamepending .= '<li><a href="game/join.php?e='.$id.'"><i class="fa fa-circle-o text-red"></i> <span>'.$game_name.'</span> <small class="label pull-right bg-red">Pending</small></a></li>';
 						}
 						else{
-							$gamecurrent .= '<li><a href="game/?game='.$id.'"><i class="fa fa-circle-o"></i> '.$game_name.'</a></li>';
+							$gamecurrent .= '<li><a href="game/?game='.$id.'&time='.$end.'"><i class="fa fa-circle-o"></i> '.$game_name.'</a></li>';
 						}
 						
 							$games = $gamecurrent ."\n".$gamepending;

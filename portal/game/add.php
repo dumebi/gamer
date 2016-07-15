@@ -42,6 +42,7 @@ if(isset($_GET['new'])){
 	$id = decrypt($gameID);
 	$user_amount = '';
 	$GameCost = '';
+	$GameDuration= '';
 	
 	//get user's account balance
 	$sqlAmount = "select amount from account where username='".$user."'";
@@ -50,10 +51,11 @@ if(isset($_GET['new'])){
 		$user_amount = $ammrow["amount"];
 		
 			//Cost of the game
-			$sqlGameCost = "select cost from games where id=".$id."";
+			$sqlGameCost = "select cost, duration from games where id=".$id."";
 			$GameCost_query = mysqli_query($conn,$sqlGameCost) or die(mysqli_error($conn));
 			while($GameCostrow = mysqli_fetch_array($GameCost_query)){ 
 			$GameCost = $GameCostrow["cost"];
+			$GameDuration = $GameCostrow["duration"];
 			}
 		}
 	
@@ -80,7 +82,7 @@ if(isset($_GET['new'])){
 									}
 	$insertCard = mysqli_query($conn, 'Insert into game_play (id, username, game_id, game_score, game_status, game_end, date_created) values ( 1, "'.$user.'", "'.$id.'", 0, "pending", now(), now())');
 	//is now more than 5...activate and set end date +3
-	$updateCard = mysqli_query($conn, 'update game_play set game_status = "active", game_end = now() + interval 3 day where id=1 and game_id="'.$id.'"') or die(mysqli_error($conn));
+	$updateCard = mysqli_query($conn, 'update game_play set game_status = "active", game_end = now() + interval '.$GameDuration.' HOUR where id=1 and game_id="'.$id.'"') or die(mysqli_error($conn));
 										//if User has not already been added into this challenge, it works....if not!
 										if($insertCard && $updateCard){
 											echo" <script>alert('Your Game has been added!')</script>"; 
@@ -143,7 +145,7 @@ if(isset($_GET['new'])){
 									}
 							$insertCard = mysqli_query($conn, 'Insert into game_play (id, username, game_id, game_score, game_status, game_end, date_created) values ( '.($gid).', "'.$user.'", "'.$id.'", 0, "pending", now(), now())');
 							//is now more than 5...activeate and set end date +3
-						$updateCard = mysqli_query($conn, 'update game_play set game_status = "active", game_end = now() + interval 3 day where id='.($gid).' and game_id="'.$id.'"') or die(mysqli_error($conn));
+						$updateCard = mysqli_query($conn, 'update game_play set game_status = "active", game_end = now() + interval '.$GameDuration.' HOUR where id='.($gid).' and game_id="'.$id.'"') or die(mysqli_error($conn));
 										//if User has not already been added into this challenge, it works....if not!
 										if($insertCard && $updateCard){
 											echo" <script>alert('Your Game has been added!')</script>"; 

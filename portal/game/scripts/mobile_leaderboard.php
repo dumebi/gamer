@@ -24,7 +24,7 @@ else{
 	$id = decrypt($eid);
 	$date_created = decrypt($time);
 	$leaderboard ='';
-$sql2 = "select username, game_score, @curRank := @curRank + 1 As rank from game_play , (Select @curRank := 0 ) r where id = (select id from game_play where username = '".$user."' and game_id = ".$id." and game_play.date_created = '".$date_created."') and game_id =".$id." order by game_score DESC";
+$sql2 = "select username, game_score, @curRank := @curRank + 1 As rank from game_play , (Select @curRank := 0 ) r where id = (select id from game_play where username = '".$user."' and game_id = ".$id." and game_play.game_status = 'active') and game_id =".$id." order by game_score DESC";
 	
 	$game_query = mysqli_query($conn,$sql2) or die(mysqli_error($conn));
 	//LeaderBoard
