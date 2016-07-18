@@ -41,7 +41,7 @@ if(isset($_GET['game']) && isset($_GET['time'])){
 	$game_end = '';
 	$games = '';
 	$cost = '';
-	$sql1 = "select games.name, games.type, games.image, games.location, games.cost, games.description, game_play.game_score, game_play.game_status, game_play.game_end from games join game_play on game_play.game_id = games.id where game_play.username = '".$user."' and game_play.game_id = '".$id."' and game_play.date_created = '".$date_created."'";
+	$sql1 = "select games.name, games.type, games.image, games.location, games.cost, games.description, game_play.game_score, game_play.game_status, game_play.game_end, game_play.result from games join game_play on game_play.game_id = games.id where game_play.username = '".$user."' and game_play.game_id = '".$id."' and game_play.date_created = '".$date_created."'";
 	$game_query = mysqli_query($conn,$sql1) or die(mysqli_error($conn));
 	
 			$gameCount = mysqli_affected_rows($conn);
@@ -58,17 +58,8 @@ if(isset($_GET['game']) && isset($_GET['time'])){
 						$game_score = $row[6];
 						$game_status = $row[7];
 						$game_end = $row[8];
+						$result = $row[9];
 						}
-						 
-					if(new DateTime() > new DateTime("".$game_end."")){
-					$expiry = mysqli_query($conn, "update game_play set game_status = 'expired' where game_id =".$id." and date_created = '".$date_created."'") or die(mysqli_error($conn));
-							if($expiry){
-								//echo "expired"; 
-							}
-							else{
-								echo '<script>window.alert("Error 1004 has occured. pls contact support");</script>';
-							}
-					}
 					
 						$end_time = date("n/j/Y g:i:s A", strtotime($game_end));
 						//echo $game_end;
@@ -113,6 +104,33 @@ $sql2 = "select username, game_score, @curRank := @curRank + 1 As rank from game
 							$price = '000';
 						}
 						
+						if($username == $user){
+							$personRank = $rank;
+							$personScore = $game_score;
+						}
+						
+						if($game_status == "expired" && ($result == "" || $result == "NULL")){
+							if($rank == '1' || $rank == '2'){
+								$expiry = mysqli_query($conn, "update game_play set result = 'won' where game_id = ".$id." and game_play.date_created = '".$date_created."'") or die(mysqli_error($conn));
+											if($expiry){
+												//echo "expired"; 
+											
+											}
+											else{
+												echo '<script>window.alert("Error 1005 has occured. pls contact support");</script>';
+											}
+							}
+							else{
+								$expiry = mysqli_query($conn, "update game_play set result = 'lost' where game_id = ".$id." and game_play.date_created = '".$date_created."'") or die(mysqli_error($conn));
+											if($expiry){
+												//echo "expired"; 
+											}
+											else{
+												echo '<script>window.alert("Error 1006 has occured. pls contact support");</script>';
+											}
+							}
+						}
+						
 						$leaderboard .= '
 						<tr>
 						  <td>'.$username.'</td>
@@ -123,26 +141,6 @@ $sql2 = "select username, game_score, @curRank := @curRank + 1 As rank from game
 						  <td> NGN '.$price.'</td>
 						</tr>
 						';
-					}
-				}
-}
-?>
-<?php
-if(isset($_GET['game']) && isset($_GET['time'])){
-	$eid = $_GET['game'];
-	$time = $_GET['time'];
-	$id = decrypt($eid);
-	$date_created = decrypt($time);
-	$rank = '';
-$ssql = "select username, game_score, @curRank := @curRank + 1 As rank from game_play , (Select @curRank := 0 ) r where id = (select id from game_play where username = '".$user."' and game_id = '".$id."' and game_play.date_created = '".$date_created."') and username = '".$user."'";
-	//echo $ssql;
-	$games_query = mysqli_query($conn,$ssql) or die(mysqli_error($conn));
-	// Rank and game score of a particular user
-			$gamesCount = mysqli_affected_rows($conn);
-				if ($gamesCount > 0) {
-					while($rows = mysqli_fetch_array($games_query)){
-						$rank = $rows['rank'];
-						$user_score = $rows['game_score'];
 					}
 				}
 }
@@ -191,14 +189,14 @@ timer = setInterval(showRemaining, 1000);
            <div class="col-md-6 col-sm-6 col-xs-12">
 			  <div class="col-md-6 col-sm-6 col-xs-6">
 				   <h3>
-					<?php echo $user_score ?>
+					<?php echo $personScore ?>
 					<small>points</small>
 					
 				  </h3>
 			  </div> 
 			  <div class="col-md-6 col-sm-6 col-xs-6">
 				   <h3>
-					#<?php echo $rank ?>
+					#<?php echo $personRank  ?>
 					<small>Rank</small>
 				  </h3>
 				  

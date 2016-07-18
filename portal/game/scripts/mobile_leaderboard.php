@@ -28,6 +28,9 @@ $sql2 = "select username, game_score, @curRank := @curRank + 1 As rank from game
 					}
 					
 				}
+				else{
+					echo" No active games for ".$user.""; 
+				}
 				
 				$leader = substr_replace($leaderboard, "", -1);
 				echo $leader;
