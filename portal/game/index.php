@@ -111,7 +111,7 @@ $sql2 = "select username, game_score, @curRank := @curRank + 1 As rank from game
 						
 						if($game_status == "expired" && ($result == "" || $result == "NULL")){
 							if($rank == '1' || $rank == '2'){
-								$expiry = mysqli_query($conn, "update game_play set result = 'won' where game_id = ".$id." and game_play.date_created = '".$date_created."'") or die(mysqli_error($conn));
+								$expiry = mysqli_query($conn, "update game_play set result = 'won' where username='".$user."' and game_id = ".$id." and game_play.date_created = '".$date_created."'") or die(mysqli_error($conn));
 											if($expiry){
 												//echo "expired"; 
 											
@@ -121,7 +121,7 @@ $sql2 = "select username, game_score, @curRank := @curRank + 1 As rank from game
 											}
 							}
 							else{
-								$expiry = mysqli_query($conn, "update game_play set result = 'lost' where game_id = ".$id." and game_play.date_created = '".$date_created."'") or die(mysqli_error($conn));
+								$expiry = mysqli_query($conn, "update game_play set result = 'lost' where username='".$user."' and game_id = ".$id." and game_play.date_created = '".$date_created."'") or die(mysqli_error($conn));
 											if($expiry){
 												//echo "expired"; 
 											}
