@@ -1,9 +1,8 @@
 {
-  "name": "admin-lte",
-  "version": "2.3.0",
+  "name": "Gamfari games",
+  "version": "1.0.0",
   "repository": {
     "type": "git",
-    "url": "git://github.com/almasaeed2010/AdminLTE.git"
   },
   "license": "MIT",
   "devDependencies": {
